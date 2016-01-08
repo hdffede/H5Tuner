@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<Parameters>
+  <High_Level_IO_Library>
+    <alignment>16384,65536</alignment>
+  </High_Level_IO_Library>
+  <Middleware_Layer>
+    <cb_nodes>64</cb_nodes>
+    <cb_buffer_size>8388608</cb_buffer_size>
+    <IBM_largeblock_io>false</IBM_largeblock_io>
+  </Middleware_Layer>
+  <Parallel_File_System>
+    <striping_factor>8</striping_factor>
+    <striping_unit>8388608</striping_unit>
+    <IBM_lockless_io>false</IBM_lockless_io>
+  </Parallel_File_System>
+</Parameters>

@@ -1,0 +1,11 @@
+* text=auto !eol
+/Makefile -text
+/config.xml -text
+/config_chunking.xml -text
+/config_chunking_IBM.xml -text
+/config_gpfs.xml -text
+/config_lustre.xml -text
+lib/autotuner.h -text
+lib/autotuner_hdf5.c -text
+lib/autotuner_hdf5_backup_Apr03.c -text
+lib/autotuner_hdf5_static.c -text

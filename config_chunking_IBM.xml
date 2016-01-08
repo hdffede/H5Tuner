@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<Parameters>
+	<High_Level_IO_Library>
+		<alignment> 1048576, 8388608 </alignment>
+		<chunk> 1,1,2621440 </chunk>
+	</High_Level_IO_Library>
+
+	<Middleware_Layer>
+		<cb_buffer_size> 4194304 </cb_buffer_size>
+		<cb_nodes> 32 </cb_nodes>
+	</Middleware_Layer>
+
+	<Parallel_File_System>
+		<IBM_lockless_io>true</IBM_lockless_io>
+	</Parallel_File_System>
+</Parameters>
+
