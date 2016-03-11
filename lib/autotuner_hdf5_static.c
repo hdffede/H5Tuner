@@ -26,14 +26,32 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	FILE *fp;
 	mxml_node_t *tree;
 
-	char *file_path = getenv("HOME");
-	strcat(file_path, "/.auto_tuner.conf");
+	char *home_path = getenv("HOME");
+        /*
+	  setup env variable for auto tuner config xml file
+	  For example: 
+	  export AT_CONFIG_FILE="/mnt/hdf/fede/AT/AT_march/examples/config.xml"
+	*/
+	char *config_file = getenv("AT_CONFIG_FILE");
+	//TODO: use default values if config not specified
+	char *file_path = config_file ;
+
 	#ifdef DEBUG
-	printf("Loading conf file: %s\n", file_path);
+		printf("Loading conf file: %s\n", file_path);
 	#endif 
-	
+
 	fp = fopen(file_path, "r");
-	tree = mxmlLoadFile(NULL, fp, MXML_TEXT_CALLBACK);
+        if(fp != NULL) {
+                #ifdef DEBUG
+			printf("Opening conf file: %s\n", file_path);
+		#endif
+		tree = mxmlLoadFile(NULL, fp, MXML_TEXT_CALLBACK);
+	}
+	else {
+		fprintf(stderr, "Error in opening config file %s. Returning...\n", file_path);
+		return ret;
+		//TODO check that ret is meaningful to the return function or simply exit
+	}
 
 	MPI_Comm orig_comm;
 	MPI_Info orig_info;
@@ -66,18 +84,45 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	node = mxmlFindElement(tree, tree, "striping_factor", NULL, NULL,MXML_DESCEND);
 	if(node != NULL) {
 		#ifdef DEBUG
-		printf("striping_factor: %s\n", node->child->value.text.string);
+                if(node->child != NULL) {
+			printf("striping_factor: %s\n", node->child->value.text.string);
+                }
+		else {
+			printf("NULL striping_factor: \n");
+		}
 		#endif
-		MPI_Info_set(orig_info, "striping_factor", node->child->value.text.string);
+                if(node->child != NULL) {
+			MPI_Info_set(orig_info, "striping_factor", node->child->value.text.string);
+			#ifdef DEBUG
+				printf("MPI_Info_set striping_factor: %s\n", node->child->value.text.string);
+			#endif
+		}
+		else {
+			printf("Could not set MPI_Info because of NULL striping_factor: \n");
+		}
 	}
 
 	node = mxmlFindElement(tree, tree, "striping_unit", NULL, NULL,MXML_DESCEND);
 	if(node != NULL) {
 		#ifdef DEBUG
-		printf("striping_unit: %s\n", node->child->value.text.string);
+		if(node->child != NULL) {
+			printf("striping_unit: %s\n", node->child->value.text.string);
+                }
+                else {
+                        printf("NULL striping_unit: \n");
+                }
 		#endif
-		MPI_Info_set(orig_info, "striping_unit", node->child->value.text.string);
-	}
+                if(node->child != NULL) {
+			MPI_Info_set(orig_info, "striping_unit", node->child->value.text.string);
+                        #ifdef DEBUG
+                                printf("MPI_Info_set striping_unit: %s\n", node->child->value.text.string);
+                        #endif
+                }
+                else {
+                        printf("Could not set MPI_Info because of NULL striping_uni: \n");
+                }
+        }
+
 
 	#ifdef DEBUG
 	MPI_Info_get_nkeys(orig_info, &nkeys);
@@ -90,8 +135,18 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 		return ret;
 	}
 
-	printf("I'm calling H5Fcreate!\n");		
+	#ifdef DEBUG
+		printf("calling H5Fcreate with filename %s \n", filename);		
+	#endif
 	ret = __real_H5Fcreate(filename, flags, fcpl_id, fapl_id);
+	#ifdef DEBUG
+		printf("called H5Fcreate with filename %s \n", filename);
+		if (fclose(fp) != NULL) {
+			printf("Closed config file \n");
+			file_path = "";
+			printf("reset path of config file \n");
+		}
+	#endif
 
 	return ret;
 }
