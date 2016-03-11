@@ -70,7 +70,7 @@ void set_mpi_parameter(mxml_node_t *tree, char *parameter_name, const char *file
 	for(node = mxmlFindElement(tree, tree, parameter_name, NULL, NULL,MXML_DESCEND); node != NULL; node = mxmlFindElement(node, tree, parameter_name, NULL, NULL,MXML_DESCEND)) {
 		node_file_name = mxmlElementGetAttr(node, "FileName");
 		#ifdef DEBUG
-		//printf("Node_file_name: %s\n", node_file_name);
+		printf("Node_file_name: %s\n", node_file_name);
 		#endif
 		// TODO: Change this strstr() function call with a use of basename!
 		if((node_file_name == NULL) || (strstr(filename, node_file_name) != NULL))  {
@@ -94,7 +94,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 	for(node = mxmlFindElement(tree, tree, parameter_name, NULL, NULL,MXML_DESCEND); node != NULL; node = mxmlFindElement(node, tree, parameter_name, NULL, NULL,MXML_DESCEND)) {
 		node_file_name = mxmlElementGetAttr(node, "FileName");
 		#ifdef DEBUG
-		//printf("Node_file_name: %s\n", node_file_name);
+		printf("Node_file_name: %s\n", node_file_name);
 		#endif
 		// TODO: Change this strstr() function call with a use of basename!
 		if((node_file_name == NULL) || (strstr(filename, node_file_name) != NULL))  {
@@ -177,11 +177,12 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	FILE *fp;
 	mxml_node_t *tree;
 
+	printf("Loading conf file: \n\n\n");
+
 	MAP_OR_FAIL(H5Fcreate);
 
-
 	char file_path[1024];
-	strcpy(file_path, "/home/bbehza2/.auto_tuner.conf");
+	strcpy(file_path, "/home/fede/.auto_tuner.conf");
         #ifdef DEBUG
 	printf("Loading conf file: %s\n", file_path);
         #endif
@@ -233,11 +234,11 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 		#endif
 	}
 
-	//#ifdef DEBUG
-	//int nkeys = -1;
-	//MPI_Info_get_nkeys(orig_info, &nkeys);
-	//printf("orig_info has %d keys\n", nkeys);
-	//#endif
+	#ifdef DEBUG
+	int nkeys = -1;
+	MPI_Info_get_nkeys(orig_info, &nkeys);
+	printf("orig_info has %d keys\n", nkeys);
+	#endif
 
 	set_gpfs_parameter(tree, "IBM_lockless_io", filename);
 	set_mpi_parameter(tree, "IBM_largeblock_io", filename, &orig_info);
@@ -252,10 +253,10 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	set_hdf5_parameter(tree, "sieve_buf_size", filename, fapl_id);
 	set_hdf5_parameter(tree, "alignment", filename, fapl_id);
 
-	//#ifdef DEBUG
-	//MPI_Info_get_nkeys(orig_info, &nkeys);
-	//printf("new orig_info has %d keys!\n", nkeys);
-	//#endif
+	#ifdef DEBUG
+	MPI_Info_get_nkeys(orig_info, &nkeys);
+	printf("new orig_info has %d keys!\n", nkeys);
+	#endif
 
 	if(driver == H5FD_MPIO) {
 		ret = H5Pset_fapl_mpio(fapl_id, orig_comm, orig_info);
@@ -289,11 +290,11 @@ herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, h
 	MAP_OR_FAIL(H5Dwrite);
 
 	#ifdef DEBUG
-	/*printf("dataset_id: %d\n", dataset_id);
+	printf("dataset_id: %d\n", dataset_id);
 	printf("mem_type_id: %d\n", mem_type_id);
 	printf("mem_space_id: %d\n", mem_space_id);
 	printf("file_space_id: %d\n", file_space_id);
-	printf("xfer_plist_id: %d\n", xfer_plist_id);*/
+	printf("xfer_plist_id: %d\n", xfer_plist_id);
 	#endif
 
 	#ifdef DEBUG
@@ -341,7 +342,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
 
     MAP_OR_FAIL(H5Dcreate1);
     char file_path[1024];
-    strcpy(file_path, "/home/bbehza2/.auto_tuner.conf");
+    strcpy(file_path, "/home/fede/.auto_tuner.conf");
 
     //strcat(file_path, "/.auto_tuner.conf");
     #ifdef DEBUG
@@ -375,7 +376,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     MAP_OR_FAIL(H5Dcreate2);
 
     char file_path[1024];
-    strcpy(file_path, "/home/bbehza2/.auto_tuner.conf");
+    strcpy(file_path, "/home/fede/.auto_tuner.conf");
 
     #ifdef DEBUG
     printf("Loading conf file for H5Dcreate2: %s\n", file_path);
