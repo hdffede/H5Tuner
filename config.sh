@@ -102,7 +102,7 @@ fi
 # Build NetCDF4 if AT_NCDF4 is defined
 #AT_NCDF4="BUILD"
 
-if [ ! -d $NCDF4DIR ] && [ -z $AT_NCDF ]
+if [ ! -d $NCDF4DIR ] && [ ! -z $AT_NCDF4 ]
 then
         echo "--";
         echo "Creating ${NCDF4DIR} and Building NetCD4"
@@ -122,11 +122,7 @@ then
         cd ..
         # Remove downloaded file
         rm -f "${NCDF4_V}.tar.gz"
-else
-        echo "--";
-        echo "A directory " $NCDF4DIR " already exists.";
-        echo "--";
-fi
+
 
 # checking for mpich -- continuing from the top of the script
 else
