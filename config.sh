@@ -100,7 +100,7 @@ else
 fi
 
 # Build NetCDF4 if AT_NCDF4 is defined
-AT_NCDF4="BUILD"
+#AT_NCDF4="BUILD"
 
 if [ ! -d $NCDF4DIR ] && [ -z $AT_NCDF ]
 then
