@@ -3,10 +3,11 @@ CC = mpicc
 
 all: lib/libautotuner_static.a lib/libautotuner.so
 
-LIBBASE=/mnt/hdf/fede/AT/AT_march
+# set enviroment variable OPTLIB with path to installed lib required by then tuner 
+#OPTLIB=/mnt/hdf/fede/AT/AT_march
 
-MXMLroot=${LIBBASE}/opt/mxml-2.9
-HDF5root=${LIBBASE}/opt/hdf5-1.8.12
+MXMLroot=${OPTLIB}/opt/mxml-2.9
+HDF5root=${OPTLIB}/opt/hdf5-1.8.12
 MPIroot=/opt/mpich2
 
 CFLAGS = -I . -I${MPIroot}/include -I${MXMLroot}/include -I${HDF5root}/include
@@ -32,7 +33,7 @@ lib/libautotuner_static.a: lib/autotuner_hdf5_static.o
 	rm lib/autotuner_hdf5_static.o
 
 lib/libautotuner.so: lib/autotuner_hdf5.po
-	$(CC) $(CFLAGS_SHARED) $(LDFAGS_SHARED) -o $@ $^ $(HDF5_LIB) $(LIBS) $(ADDFLAGS_SHARED) 
+	$(CC) $(CFLAGS_SHARED) $(LDFAGS_SHARED) -o $@ $^ $(HDF5_LIB) $(LIBS) $(ADDFLAGS_SHARED)
 	rm lib/autotuner_hdf5.po
 
 clean:
