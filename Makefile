@@ -39,4 +39,4 @@ lib/libautotuner.so: lib/autotuner_hdf5.po
 	rm lib/autotuner_hdf5.po
 
 clean:
-	rm -f *.o *.a lib/*.o lib/*.a
+	rm -f *.o *.a lib/*.o lib/*.a lib/*.so lib/*.po
