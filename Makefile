@@ -5,13 +5,15 @@ all: lib/libautotuner_static.a lib/libautotuner.so
 
 # AT_DIR=/path/to/H5Tuner (set with an enviroment variable)
 
-MXMLROOT=${AT_DIR}/opt/mxml-2.9
-HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.12
-# set with environment variable MPIROOT
-MPIROOT=/opt/mpich2
+# MXMLROOT is set with the correpondent environment variable
+# for instance MXMLROOT=${AT_DIR}/opt/mxml-2.9
+# HDF5ROOT is set with the correpondent environment variable
+# HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.12
+# MPI set with environment variable MPIROOT
+# for instance export MPIROOT=/opt/mpich2
 
 CFLAGS = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include
-CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -g -shared -fpic -DPIC
+CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -shared -fpic -DPIC
 LDFLAGS =
 LDFLAGS_SHARED = -ldl
 
