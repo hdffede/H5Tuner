@@ -3,21 +3,21 @@ CC = mpicc
 
 all: lib/libautotuner_static.a lib/libautotuner.so
 
-# set enviroment variable OPTLIB with path to installed lib required by then tuner 
-#OPTLIB=/mnt/hdf/fede/AT/AT_march
+# AT_DIR=/path/to/H5Tuner (set with an enviroment variable)
 
-MXMLroot=${OPTLIB}/opt/mxml-2.9
-HDF5root=${OPTLIB}/opt/hdf5-1.8.12
-MPIroot=/opt/mpich2
+MXMLROOT=${AT_DIR}/opt/mxml-2.9
+HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.12
+# set with environment variable MPIROOT
+MPIROOT=/opt/mpich2
 
-CFLAGS = -I . -I${MPIroot}/include -I${MXMLroot}/include -I${HDF5root}/include
-CFLAGS_SHARED = -I . -I${MPIroot}/include -I${MXMLroot}/include -I${HDF5root}/include -g -shared -fpic -DPIC
+CFLAGS = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include
+CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -g -shared -fpic -DPIC
 LDFLAGS =
 LDFLAGS_SHARED = -ldl
 
 LIBS = -lpthread -lrt -lz
-MXML_LIB = ${MXMLroot}/lib/libmxml.so
-HDF5_LIB = -L${HDF5root}/lib -lhdf5
+MXML_LIB = ${MXMLROOT}/lib/libmxml.so
+HDF5_LIB = -L${HDF5ROOT}/lib -lhdf5
 
 ADDFLAGS = -DDEBUG
 ADDFLAGS_SHARED = -DDEBUG
