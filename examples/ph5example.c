@@ -271,7 +271,7 @@ phdf5writeInd(char *filename)
     MESG("H5Pset_fapl_mpio succeed");
 
     /* create the file collectively */
-printf("prior to callig H5Fcreate test on file %s\n", filename);
+    /* printf("prior to callig H5Fcreate test on file %s\n", filename); */
     fid1 = H5Fcreate(filename, H5F_ACC_TRUNC, H5P_DEFAULT, acc_tpl1);
     assert(fid1 != FAIL);
     MESG("H5Fcreate succeed");
