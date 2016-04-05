@@ -182,7 +182,10 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	MAP_OR_FAIL(H5Fcreate);
 
 	char file_path[1024];
-	strcpy(file_path, "/home/fede/.auto_tuner.conf");
+	strcpy(file_path, "config.xml");
+  // char *config_file = getenv("AT_CONFIG_FILE");
+  //TODO: use default values if config not specified
+  // char *file_path = config_file ;
         #ifdef DEBUG
 	       printf("Loading conf file: %s\n", file_path);
         #endif
@@ -355,8 +358,9 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
     mxml_node_t *tree;
 
     MAP_OR_FAIL(H5Dcreate1);
+
     char file_path[1024];
-    strcpy(file_path, "/home/fede/.auto_tuner.conf");
+    strcpy(file_path, "config.xml");
 
     //strcat(file_path, "/.auto_tuner.conf");
     #ifdef DEBUG
@@ -390,7 +394,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     MAP_OR_FAIL(H5Dcreate2);
 
     char file_path[1024];
-    strcpy(file_path, "/home/fede/.auto_tuner.conf");
+    strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
     printf("Loading conf file for H5Dcreate2: %s\n", file_path);
