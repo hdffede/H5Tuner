@@ -1,8 +1,4 @@
-CC = mpicc
-#CC = h5pcc
-
-all: lib/libautotuner_static.a lib/libautotuner.so
-
+#
 # AT_DIR=/path/to/H5Tuner (set with an enviroment variable)
 
 # MXMLROOT is set with the correpondent environment variable
@@ -11,6 +7,8 @@ all: lib/libautotuner_static.a lib/libautotuner.so
 # HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.12
 # MPI set with environment variable MPIROOT
 # for instance export MPIROOT=/opt/mpich2
+
+CC = mpicc
 
 CFLAGS = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include
 CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -shared -fpic -DPIC
@@ -24,10 +22,12 @@ HDF5_LIB = -L${HDF5ROOT}/lib -lhdf5
 ADDFLAGS = -DDEBUG
 ADDFLAGS_SHARED = -DDEBUG
 
-lib/autotuner_hdf5_static.o: lib/autotuner_hdf5_static.c lib/autotuner.h
+all: lib/libautotuner_static.a lib/libautotuner.so
+
+lib/autotuner_hdf5_static.o: src/autotuner_hdf5_static.c lib/autotuner.h
 	$(CC) $(CFLAGS) -c $< -o $@  $(HDF5_LIB) $(ADDFLAGS)
 
-lib/autotuner_hdf5.po: lib/autotuner_hdf5.c lib/autotuner.h
+lib/autotuner_hdf5.po: src/autotuner_hdf5.c lib/autotuner.h
 	$(CC) $(CFLAGS_SHARED) -c $< -o $@ $(ADDFLAGS_SHARED)
 
 lib/libautotuner_static.a: lib/autotuner_hdf5_static.o
