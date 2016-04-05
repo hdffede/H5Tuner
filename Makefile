@@ -14,7 +14,7 @@ OS := $(shell uname)
 CC = mpicc
 
 CFLAGS = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include
-CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -shared -fpic -DPIC
+CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -g -shared -fpic -DPIC
 LDFLAGS =
 LDFLAGS_SHARED = -ldl
 
