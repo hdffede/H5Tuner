@@ -35,10 +35,10 @@ ADDFLAGS_SHARED = -DDEBUG
 
 all: lib/libautotuner_static.a lib/libautotuner.so
 
-lib/autotuner_hdf5_static.o: src/autotuner_hdf5_static.c lib/autotuner.h
+lib/autotuner_hdf5_static.o: src/autotuner_hdf5_static.c src/autotuner.h
 	$(CC) $(CFLAGS) -c $< -o $@  $(HDF5_LIB) $(ADDFLAGS)
 
-lib/autotuner_hdf5.po: src/autotuner_hdf5.c lib/autotuner.h
+lib/autotuner_hdf5.po: src/autotuner_hdf5.c src/autotuner.h
 	$(CC) $(CFLAGS_SHARED) -c $< -o $@ $(ADDFLAGS_SHARED)
 
 lib/libautotuner_static.a: lib/autotuner_hdf5_static.o
