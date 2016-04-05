@@ -7,7 +7,7 @@
 #include "autotuner.h"
 #include "mxml.h"
 
-/* 
+/*
 typedef int hid_t;
 typedef int herr_t;
 */
@@ -27,9 +27,9 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	mxml_node_t *tree;
 
 	char *home_path = getenv("HOME");
-        /*
+  /*
 	  setup env variable for auto tuner config xml file
-	  For example: 
+	  For example:
 	  export AT_CONFIG_FILE="/mnt/hdf/fede/AT/AT_march/examples/config.xml"
 	*/
 	char *config_file = getenv("AT_CONFIG_FILE");
@@ -38,7 +38,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	#ifdef DEBUG
 		printf("Loading conf file: %s\n", file_path);
-	#endif 
+	#endif
 
 	fp = fopen(file_path, "r");
         if(fp != NULL) {
@@ -79,7 +79,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	MPI_Info_get_nkeys(orig_info, &nkeys);
 	printf("orig_info has %d keys!\n", nkeys);
 	#endif
-	
+
 	mxml_node_t *node;
 	node = mxmlFindElement(tree, tree, "striping_factor", NULL, NULL,MXML_DESCEND);
 	if(node != NULL) {
@@ -136,7 +136,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	}
 
 	#ifdef DEBUG
-		printf("calling H5Fcreate with filename %s \n", filename);		
+		printf("calling H5Fcreate with filename %s \n", filename);
 	#endif
 	ret = __real_H5Fcreate(filename, flags, fcpl_id, fapl_id);
 	#ifdef DEBUG
@@ -155,7 +155,7 @@ hid_t DECL(H5Fopen)(const char *filename, unsigned flags, hid_t fapl_id)
 {
 	int ret;
 
-	printf("I'm calling H5Fopen!\n");		
+	printf("Calling H5Fopen!\n");
 	ret = __real_H5Fopen(filename, flags, fapl_id);
 
 	return ret;
