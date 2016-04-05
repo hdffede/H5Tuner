@@ -8,6 +8,9 @@
 # MPI set with environment variable MPIROOT
 # for instance export MPIROOT=/opt/mpich2
 
+# Detect OS from shell
+OS := $(shell uname)
+
 CC = mpicc
 
 CFLAGS = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include
@@ -15,7 +18,15 @@ CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/in
 LDFLAGS =
 LDFLAGS_SHARED = -ldl
 
-LIBS = -lpthread -lrt -lz
+OS := $(shell uname)
+ifeq $(OS) Darwin
+  # On MacOS
+  LIBS = -lpthread -lz
+else
+  # set for Linux
+  LIBS = -lpthread -lrt -lz
+endif
+
 MXML_LIB = ${MXMLROOT}/lib/libmxml.so
 HDF5_LIB = -L${HDF5ROOT}/lib -lhdf5
 
