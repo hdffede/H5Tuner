@@ -19,7 +19,7 @@ LDFLAGS =
 LDFLAGS_SHARED = -ldl
 
 OS := $(shell uname)
-ifeq $(OS) Darwin
+ifeq ($(OS), Darwin)
   # On MacOS
   LIBS = -lpthread -lz
 else
