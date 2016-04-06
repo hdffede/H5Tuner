@@ -22,7 +22,7 @@ FORWARD_DECL(H5Fopen, hid_t, (const char *filename, unsigned flags, hid_t fapl_i
 
 hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t fapl_id)
 {
-	herr_t ret;
+	herr_t ret = -1;
 	FILE *fp;
 	mxml_node_t *tree;
 
@@ -141,7 +141,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	ret = __real_H5Fcreate(filename, flags, fcpl_id, fapl_id);
 	#ifdef DEBUG
 		printf("called H5Fcreate with filename %s \n", filename);
-		if (fclose(fp) != NULL) {
+		if (fclose(fp) != 0) {
 			printf("Closed config file \n");
 			file_path = "";
 			printf("reset path of config file \n");
