@@ -173,7 +173,7 @@ FORWARD_DECL(H5Dcreate2, hid_t, (hid_t loc_id, const char *name, hid_t dtype_id,
 
 hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t fapl_id)
 {
-	herr_t ret;
+	herr_t ret = -1;
 	FILE *fp;
 	mxml_node_t *tree;
 
@@ -206,7 +206,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	}
   #ifdef H5_MPIPOSIX
   /*
-  when defined MPIPOSIX then the Posix Driver will be supported
+  when defined H5_MPIPOSIX then the Posix Driver will be supported
   for hdf5-1.8.9 to 1.8.12 versions
   */
   else if(driver == H5FD_MPIPOSIX) {
@@ -302,7 +302,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 }
 
 herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id, hid_t xfer_plist_id, const void * buf) {
-	herr_t ret;
+	herr_t ret = -1;
 
 	MAP_OR_FAIL(H5Dwrite);
 
@@ -353,7 +353,7 @@ herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, h
 }
 
 hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t space_id, hid_t dcpl_id) {
-    herr_t ret;
+    herr_t ret = -1;
     FILE *fp;
     mxml_node_t *tree;
 
@@ -387,7 +387,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
 }
 
 hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t space_id, hid_t lcpl_id, hid_t dcpl_id, hid_t dapl_id) {
-    herr_t ret;
+    herr_t ret = -1;
     FILE *fp;
     mxml_node_t *tree;
 
