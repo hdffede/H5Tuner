@@ -16,7 +16,7 @@ CC = mpicc
 
 CFLAGS = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include
 CFLAGS_SHARED = -I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -g -shared -fpic -DPIC
-LDFLAGS =
+LDFLAGS = 
 LDFLAGS_SHARED = -ldl
 
 OS := $(shell uname)
@@ -28,7 +28,7 @@ else
   LIBS = -lpthread -lrt -lz
 endif
 
-MXML_LIB = ${MXMLROOT}/lib/libmxml.so
+MXML_LIB = -L${MXMLROOT}/lib/ -lmxml
 HDF5_LIB = -L${HDF5ROOT}/lib -lhdf5
 
 ADDFLAGS = -DDEBUG
@@ -37,17 +37,17 @@ ADDFLAGS_SHARED = -DDEBUG
 all: lib/libautotuner_static.a lib/libautotuner.so
 
 lib/autotuner_hdf5_static.o: src/autotuner_hdf5_static.c src/autotuner.h
-	$(CC) $(CFLAGS) -c $< -o $@  $(HDF5_LIB) $(ADDFLAGS)
+	$(CC) $(CFLAGS) -c $< -o $@  $(HDF5_LIB) $(MXML_LIB) $(ADDFLAGS)
 
 lib/autotuner_hdf5.po: src/autotuner_hdf5.c src/autotuner.h
-	$(CC) $(CFLAGS_SHARED) -c $< -o $@ $(ADDFLAGS_SHARED)
+	$(CC) $(CFLAGS_SHARED) $(LDFAGS_SHARED) -c $< -o $@ $(ADDFLAGS_SHARED)
 
 lib/libautotuner_static.a: lib/autotuner_hdf5_static.o
 	ar rcs $@ $^
 	rm lib/autotuner_hdf5_static.o
 
-lib/libautotuner.so: lib/autotuner_hdf5.po
-	$(CC) $(CFLAGS_SHARED) $(LDFAGS_SHARED) -o $@ $^ $(HDF5_LIB) $(LIBS) $(ADDFLAGS_SHARED)
+lib/libautotuner.so: lib/autotuner_hdf5.po 
+	$(CC) $(CFLAGS_SHARED) $(LDFAGS_SHARED) -o $@ $^ $(HDF5_LIB) $(MXML_LIB) $(LIBS) $(ADDFLAGS_SHARED)
 	rm lib/autotuner_hdf5.po
 
 clean:

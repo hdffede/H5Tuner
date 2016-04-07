@@ -204,21 +204,8 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 		#endif
 		ret = H5Pget_fapl_mpio(fapl_id, &orig_comm, &orig_info);
 	}
-  /*
-  #ifdef H5_MPIPOSIX
-  when defined H5_MPIPOSIX then the Posix Driver will be supported
-  for hdf5-1.8.9 to 1.8.12 versions
-  */
-  else if(driver == H5FD_MPIPOSIX) {
-    #ifdef DEBUG
-		  printf("Driver is H5FD_MPIPOSIX\n");
-    #endif
-		ret = H5Pget_fapl_mpiposix(fapl_id, &orig_comm, &orig_info);
-	}
-  // #endif
-  // end of MPIPOSIX ifdef
 	else {
-		fprintf(stderr, "AT Library supports mpio and mpiposix (hdf5-1.8.9-12) drivers only(). Returning...\n");
+		fprintf(stderr, "AT Library supports mpio drivers only(). Returning...\n");
 		return ret;
 	}
 
@@ -271,19 +258,8 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	if(driver == H5FD_MPIO) {
 		ret = H5Pset_fapl_mpio(fapl_id, orig_comm, orig_info);
 	}
-  /*
-  #ifdef H5_MPIPOSIX
-
-  when defined MPIPOSIX then the Posix Driver will be supported
-  for hdf5-1.8.9 to 1.8.12 versions
-  */
-	else if(driver == H5FD_MPIPOSIX) {
-		ret = H5Pset_fapl_mpiposix(fapl_id, orig_comm, orig_info);
-	}
-  // #endif
-  // end of MPIPOSIX ifdef
 	else {
-		fprintf(stderr, "AT Library supports mpio and mpiposix (hdf5-1.8.9-12) drivers only(). Returning...\n");
+		fprintf(stderr, "AT Library supports mpio drivers only(). Returning...\n");
 		return ret;
 	}
 
