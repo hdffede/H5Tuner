@@ -1,6 +1,7 @@
+# Makefile to build the H5Tuner library
 #
 # AT_DIR=/path/to/H5Tuner (set with an enviroment variable)
-
+#
 # MXMLROOT is set with the correpondent environment variable
 # for instance MXMLROOT=${AT_DIR}/opt/mxml-2.9
 # HDF5ROOT is set with the correpondent environment variable
