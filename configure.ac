@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.69)
 
-AC_INIT(autotuner, 1.0, me@mail.com)
+AC_INIT(autotuner, 0.1.1, fede@hdfgroup.org)
 
 AC_CONFIG_SRCDIR([src/autotuner_hdf5.c])
 AC_CONFIG_HEADERS([src/autotuner.h])
