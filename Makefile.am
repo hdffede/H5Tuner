@@ -26,35 +26,35 @@ MAINTAINERCLEANFILES = config.h config.log config.status
 test _test: check
 
 lib progs check-p check-s:
-        for d in $(SUBDIRS); do                                \
-          if test $$d != .; then                                        \
-           (cd $$d && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;            \
-          fi;                                                           \
-        done
+				for d in $(SUBDIRS); do																\
+					if test $$d != .; then																				\
+					 (cd $$d && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;						\
+					fi;																													 \
+				done
 
 # Make all, tests, and (un)install
 tests:
-        for d in $(SUBDIRS); do                        \
-          if test $$d != .; then                                        \
-           (cd $$d && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;            \
-          fi;                                                           \
-          done
+				for d in $(SUBDIRS); do												\
+					if test $$d != .; then																				\
+					 (cd $$d && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;						\
+					fi;																													 \
+					done
 
 # Check-clean also recurses into examples directory
 check-clean:
-        for d in $(SUBDIRS) examples; do               \
-          if test $$d != .; then                                        \
-           (cd $$d && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;            \
-          fi;                                                           \
-        done
-        $(RM) -rf prefix-tmp destdir-tmp
+				for d in $(SUBDIRS) examples; do							 \
+					if test $$d != .; then																				\
+					 (cd $$d && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;						\
+					fi;																													 \
+				done
+				$(RM) -rf prefix-tmp destdir-tmp
 
 # Some C++ compilers/linkers will create a directory named ii_files in
 # the root directory, which should be cleaned.
 mostlyclean-local:
-        if test -d ii_files; then                                       \
-          $(RM) -rf ii_files;                                           \
-        fi
+				if test -d ii_files; then																			 \
+					$(RM) -rf ii_files;																					 \
+				fi
 
 # 'make install' will now install examples, the same as 'make install-all'.
 # 'make-install-all' will be redundant but will still work.
@@ -63,14 +63,14 @@ uninstall: uninstall-recursive uninstall-examples
 
 # 'make install-all' also installs examples
 install-all:
-        @$(MAKE) $(AM_MAKEFLAGS) install
+				@$(MAKE) $(AM_MAKEFLAGS) install
 uninstall-all:
-        @$(MAKE) $(AM_MAKEFLAGS) uninstall
+				@$(MAKE) $(AM_MAKEFLAGS) uninstall
 
 # `make check-install' or `make installcheck' checks that examples can
-#  be successfully built
+#	be successfully built
 installcheck-local:
-        if test -n "${DESTDIR}"; then                                  \
-          (cd ${DESTDIR}$(bindir) && pwd && ./h5redeploy -force);     \
-        fi
-        @(cd examples && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;
+				if test -n "${DESTDIR}"; then																	\
+					(cd ${DESTDIR}$(bindir) && pwd && ./h5redeploy -force);		 \
+				fi
+				@(cd examples && $(MAKE) $(AM_MAKEFLAGS) $@) || exit 1;
