@@ -33,7 +33,7 @@ vpicio_uni: vpicio_uni.o
 ph5example: ph5example.o
 	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS) --verbose
 	#rm ph5example.o
-	$(CC) -g -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(MXMLLIB) -shlib
+	$(CC) -g -o ph5example ph5example.o -I. -shlib
 
 AT: vpicio_uni.o
 	$(CC) -o vpicio_uni_at vpicio_uni.o -I. $(LIB) $(H5PLIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS) $(H5ATLIB) -Wl,-wrap,H5Fcreate -Wl,-wrap,H5Fopen
@@ -51,6 +51,5 @@ clean_vpic:
 
 clean:
 	rm  -f vpicio_uni vpicio_uni_at
-	rm  -f ph5example ph5example_at
 	rm  -f ph5example ph5example_at
 	rm  -f ph5example.o ph5example_at.o
