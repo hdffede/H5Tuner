@@ -11,8 +11,6 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 LT_INIT([dlopen])
 
-
-
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
