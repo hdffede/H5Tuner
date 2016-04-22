@@ -1,13 +1,14 @@
 CC = h5pcc
 #CC = mpicc
 
-#AT_DIR is the path to H5Tuner direcorty (setup with env variable)
-MXMLROOT=${AT_DIR}/opt/mxml-2.9
-HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.12
-MPIROOT=/opt/mpich2
-H5PROOT=${AT_DIR}/opt/h5part-1.6.6
-ZROOT=${AT_DIR}/opt/zlib-1.2.8
-H5TUNEROOT=${AT_DIR}
+#AT_DIR is the path to H5Tuner directory
+# setup ROOTs with env variables for example
+#MXMLROOT=${AT_DIR}/opt/mxml-2.9
+#HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.16
+#MPIROOT=/opt/mpich2
+#H5PROOT=${AT_DIR}/opt/h5part-1.6.6
+#ZROOT=${AT_DIR}/opt/zlib-1.2.8
+#H5TUNEROOT=${AT_DIR}
 
 CFLAGS = -DUSE_V4_SSE -DOMPI_SKIP_MPICXX
 H5PFLAGS = -I${MPIROOT}/include -I${HDF5ROOT}/include -I${H5PROOT}/include

@@ -26,24 +26,17 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	FILE *fp;
 	mxml_node_t *tree;
 
-	char *home_path = getenv("HOME");
-  /*
-	  setup env variable for auto tuner config xml file
-	  For example:
-	  export AT_CONFIG_FILE="/mnt/hdf/fede/AT/AT_march/examples/config.xml"
-	*/
-	char *config_file = getenv("AT_CONFIG_FILE");
-	//TODO: use default values if config not specified
-	char *file_path = config_file ;
+	char file_path[1024];
+	strcpy(file_path, "config.xml");
 
 	#ifdef DEBUG
-		printf("Loading conf file: %s\n", file_path);
+		printf("Loading config file: %s\n", file_path);
 	#endif
 
 	fp = fopen(file_path, "r");
         if(fp != NULL) {
                 #ifdef DEBUG
-			printf("Opening conf file: %s\n", file_path);
+			printf("Opening config file: %s\n", file_path);
 		#endif
 		tree = mxmlLoadFile(NULL, fp, MXML_TEXT_CALLBACK);
 	}
@@ -143,7 +136,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 		printf("called H5Fcreate with filename %s \n", filename);
 		if (fclose(fp) != 0) {
 			printf("Closed config file \n");
-			file_path = "";
+			strcpy( file_path, "");
 			printf("reset path of config file \n");
 		}
 	#endif
