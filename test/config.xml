@@ -1,9 +1,9 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Parameters>
 	<High_Level_IO_Library>
-		<alignment>524288,262144</alignment>
+		<sieve_buf_size>262144</sieve_buf_size>
+		<alignment>88,44</alignment>
 		<!-- H5Pset_alignment function gets 2 args: (Threshold, Alignment) -->
-		<chunk>32,32</chunk>
 	</High_Level_IO_Library>
 
 	<Middleware_Layer>
