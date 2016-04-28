@@ -244,7 +244,7 @@ phdf5writeInd(char *filename)
     hid_t mem_dataspace;	/* memory dataspace ID */
     hid_t dataset1, dataset2;	/* Dataset ID */
     hsize_t dims1[SPACE1_RANK] =
-	{SPACE1_DIM1,SPACE1_DIM2};	/* dataspace dim sizes */
+	  {SPACE1_DIM1,SPACE1_DIM2};	/* dataspace dim sizes */
     DATATYPE data_array1[SPACE1_DIM1][SPACE1_DIM2];	/* data buffer */
 
     hsize_t start[SPACE1_RANK];			/* for hyperslab setting */
@@ -254,9 +254,17 @@ phdf5writeInd(char *filename)
 
     MPI_Comm comm = MPI_COMM_WORLD;
     MPI_Info info = MPI_INFO_NULL;
+		
+		/* in support of H5Tuner Test */
+		MPI_Comm comm_test = MPI_COMM_WORLD;
+    MPI_Info info_test ;
+    int i_test, nkeys_test, flag_test;
+    char key[MPI_MAX_INFO_KEY], value[MPI_MAX_INFO_VAL+1];
+    char *libtuner_file = getenv("LD_PRELOAD");
+    /* in support of H5Tuner Test */
 
     if (verbose)
-	printf("Independent write test on file %s\n", filename);
+	  printf("Independent write test on file %s\n", filename);
 
     /* -------------------
      * START AN HDF5 FILE
@@ -275,6 +283,83 @@ phdf5writeInd(char *filename)
     fid1 = H5Fcreate(filename, H5F_ACC_TRUNC, H5P_DEFAULT, acc_tpl1);
     assert(fid1 != FAIL);
     MESG("H5Fcreate succeed");
+
+		// Retrieve MPI parameters set via the H5Tuner
+		// MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
+		// printf("Setting %s: %s\n", parameter_name, node->child->value.text.string);
+
+		printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+			// Retrieve HDF5 Threshold and Alignment
+			hsize_t alignment[2];
+			size_t sieve_buf_size;
+			alignment[0]= 0; // threshold value
+			alignment[1]= 0; // alignment value
+			int ierr = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
+			printf("\n\n--------------------------------------------------\n");
+			printf("Testing values for Threshold and Alignment\n");
+			printf("--------------------------------------------------\n");
+			printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
+			printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
+			if ( alignment[0] == 88 ) {
+							printf("PASSED: Threshold Test\n");
+			}
+			else {
+							printf("FAILED: Threshold Test\n");
+			}
+			if ( alignment[1] == 44 ) {
+							printf("PASSED: Alignment Test\n");
+			}
+			else {
+							printf("FAILED: Alignment Test\n");
+			}
+			printf("--------------------------------------------------\n\n");
+
+			ierr = H5Pget_sieve_buf_size(acc_tpl1, &sieve_buf_size);
+			printf("\n\n--------------------------------------------------\n");
+			printf("Testing values for Sieve Buffer Size\n");
+			printf("--------------------------------------------------\n");
+			printf("Test value set to:77 \nRetrieved Sieve Buffer Size=%lu\n", sieve_buf_size);
+			if ( (int) sieve_buf_size == 77 ) {
+							printf("PASSED: Sieve Buffer Size Test\n");
+			}
+			else {
+							printf("FAILED: Sieve Buffer Size Test\n");
+			}
+			printf("--------------------------------------------------\n\n");
+
+MPI_Info_create(&info_test);
+
+ret = H5Pget_fapl_mpio(acc_tpl1, &comm_test, &info_test);
+assert(ret != FAIL);
+MESG("H5Pget_fapl_mpio succeed");
+
+
+printf("MPI info keys\n" );
+			printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+if(info_test == MPI_INFO_NULL) {
+				printf("MPI info object is null! No keys are available.\n");
+}
+else {
+MPI_Info_get_nkeys(info_test, &nkeys_test);
+printf("MPI info has %d keys\n", nkeys_test);
+if (nkeys_test <= 0) {
+	printf("MPI info has no keys\n");
+}
+else {
+	printf("MPI info has %d keys\n", nkeys_test);
+	for ( i_test=0; i_test < nkeys_test; i_test++) {
+		MPI_Info_get_nthkey( info_test, i_test, key );
+		MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
+		printf( "Info values for key %s is %s\n", key, value );
+		//fflush(stdout);
+	}
+}
+MPI_Info_free(&info_test);
+}
+
+		ret = H5Pget_fapl_mpio(acc_tpl1, comm, info);
+    assert(ret != FAIL);
+    MESG("H5Pget_fapl_mpio succeed");
 
     /* Release file-access template */
     ret = H5Pclose(acc_tpl1);
@@ -504,7 +589,7 @@ phdf5writeAll(char *filename)
     MPI_Info info = MPI_INFO_NULL;
 
     if (verbose)
-	printf("Collective write test on file %s\n", filename);
+			printf("Collective write test on file %s\n", filename);
 
     /* -------------------
      * START AN HDF5 FILE
