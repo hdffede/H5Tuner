@@ -2,7 +2,7 @@
 <Parameters>
 	<High_Level_IO_Library>
 		<sieve_buf_size>262144</sieve_buf_size>
-		<alignment>524288,262144</alignment>
+		<alignment>88,44</alignment>
 		<!-- H5Pset_alignment function gets 2 args: (Threshold, Alignment) -->
 	</High_Level_IO_Library>
 
