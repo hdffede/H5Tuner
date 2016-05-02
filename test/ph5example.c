@@ -290,7 +290,7 @@ phdf5writeInd(char *filename)
 
 		// Retrieve MPI parameters set via the H5Tuner
 
-		printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+		printf("\n\nVersion of the H5Tuner loaded: %s\n\n", libtuner_file);
 
 
 		// Retrieve HDF5 Threshold and Alignment
@@ -367,10 +367,6 @@ phdf5writeInd(char *filename)
 		}
 		// end of H5Tuner tests
 		// ------------------------------------------------
-
-		ret = H5Pget_fapl_mpio(acc_tpl1, comm, info);
-    assert(ret != FAIL);
-    MESG("H5Pget_fapl_mpio succeed");
 
     /* Release file-access template */
     ret = H5Pclose(acc_tpl1);
