@@ -70,17 +70,23 @@ void set_mpi_parameter(mxml_node_t *tree, char *parameter_name, const char *file
 	for(node = mxmlFindElement(tree, tree, parameter_name, NULL, NULL,MXML_DESCEND); node != NULL; node = mxmlFindElement(node, tree, parameter_name, NULL, NULL,MXML_DESCEND)) {
 		node_file_name = mxmlElementGetAttr(node, "FileName");
 		#ifdef DEBUG
-		printf("Node_file_name: %s\n", node_file_name);
+		//printf("Node_file_name: %s\n", node_file_name);
 		#endif
 		// TODO: Change this strstr() function call with a use of basename!
-		if((node_file_name == NULL) || (strstr(filename, node_file_name) != NULL))  {
+		if(node_file_name == NULL)  {
 			#ifdef DEBUG
-			printf("Setting %s: %s\n", parameter_name, node->child->value.text.string);
+			printf("H5Tuner: Execution wide setting %s: %s\n", parameter_name, node->child->value.text.string);
 			#endif
 			MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
 		}
 		else {
-			continue;
+      if( strstr(filename, node_file_name) != NULL )  {
+        #ifdef DEBUG
+        printf("H5Tuner: %s setting %s: %s\n\n\n",node_file_name, parameter_name, node->child->value.text.string);
+        #endif
+        MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
+      }
+			//continue;
 		}
 	}
 }
@@ -94,12 +100,12 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 	for(node = mxmlFindElement(tree, tree, parameter_name, NULL, NULL,MXML_DESCEND); node != NULL; node = mxmlFindElement(node, tree, parameter_name, NULL, NULL,MXML_DESCEND)) {
 		node_file_name = mxmlElementGetAttr(node, "FileName");
 		#ifdef DEBUG
-		  printf("Node_file_name: %s\n", node_file_name);
+		  //printf("Node_file_name: %s\n", node_file_name);
 		#endif
 		// TODO: Change this strstr() function call with a use of basename!
 		if((node_file_name == NULL) || (strstr(filename, node_file_name) != NULL))  {
 				#ifdef DEBUG
-				  printf("Setting %s: %s\n", parameter_name, node->child->value.text.string);
+				  printf("H5Tuner setting %s: %s\n", parameter_name, node->child->value.text.string);
 				#endif
 			if(strcmp(parameter_name, "sieve_buf_size") == 0) {
 				int ierr = H5Pset_sieve_buf_size(fapl_id, atoi(node->child->value.text.string));
