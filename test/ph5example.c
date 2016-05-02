@@ -404,9 +404,9 @@ phdf5writeInd(char *filename)
     count[1] = SPACE1_DIM2;
     stride[0] = 1;
     stride[1] =1;
-if (verbose)
-    printf("start[]=(%lu,%lu), count[]=(%lu,%lu), total datapoints=%lu\n",
-	(unsigned long)start[0], (unsigned long)start[1],
+		if (verbose)
+    	printf("start[]=(%lu,%lu), count[]=(%lu,%lu), total datapoints=%lu\n",
+				(unsigned long)start[0], (unsigned long)start[1],
         (unsigned long)count[0], (unsigned long)count[1],
         (unsigned long)(count[0]*count[1]));
 
@@ -478,7 +478,7 @@ phdf5readInd(char *filename)
     MPI_Info info = MPI_INFO_NULL;
 
     if (verbose)
-	printf("Independent read test on file %s\n", filename);
+			printf("Independent read test on file %s\n", filename);
 
     /* setup file access template */
     acc_tpl1 = H5Pcreate (H5P_FILE_ACCESS);
@@ -595,6 +595,15 @@ phdf5writeAll(char *filename)
     MPI_Comm comm = MPI_COMM_WORLD;
     MPI_Info info = MPI_INFO_NULL;
 
+
+		/* in support of H5Tuner Test */
+		MPI_Comm comm_test = MPI_COMM_WORLD;
+		MPI_Info info_test ;
+		int i_test, nkeys_test, flag_test;
+		char key[MPI_MAX_INFO_KEY], value[MPI_MAX_INFO_VAL+1];
+		char *libtuner_file = getenv("LD_PRELOAD");
+		/* in support of H5Tuner Test */
+
     if (verbose)
 			printf("Collective write test on file %s\n", filename);
 
@@ -614,6 +623,91 @@ phdf5writeAll(char *filename)
     fid1=H5Fcreate(filename,H5F_ACC_TRUNC,H5P_DEFAULT,acc_tpl1);
     assert(fid1 != FAIL);
     MESG("H5Fcreate succeed");
+
+// ------------------------------------------------
+// H5Tuner tests
+// ------------------------------------------------
+
+// Retrieve MPI parameters set via the H5Tuner
+
+printf("\n\nVersion of the H5Tuner loaded: %s\n\n", libtuner_file);
+
+
+// Retrieve HDF5 Threshold and Alignment
+hsize_t alignment[2];
+size_t sieve_buf_size;
+alignment[0]= 0; // threshold value
+alignment[1]= 0; // alignment value
+int ierr = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
+printf("\n\n--------------------------------------------------\n");
+printf("Testing values for Threshold and Alignment\n");
+printf("--------------------------------------------------\n");
+printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
+printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
+// Check Threshold
+if ( alignment[0] == 88 ) {
+	printf("PASSED: Threshold Test\n");
+}
+else {
+	printf("FAILED: Threshold Test\n");
+}
+// Check Alignment
+if ( alignment[1] == 44 ) {
+	printf("PASSED: Alignment Test\n");
+}
+else {
+	printf("FAILED: Alignment Test\n");
+}
+printf("--------------------------------------------------\n\n");
+
+// Retrieve HDF5 sieve buffer size
+ierr = H5Pget_sieve_buf_size(acc_tpl1, &sieve_buf_size);
+printf("\n\n--------------------------------------------------\n");
+printf("Testing values for Sieve Buffer Size\n");
+printf("--------------------------------------------------\n");
+printf("Test value set to:77 \nRetrieved Sieve Buffer Size=%lu\n", sieve_buf_size);
+// Check sieve buffer size
+if ( (int) sieve_buf_size == 77 ) {
+	printf("PASSED: Sieve Buffer Size Test\n");
+}
+else {
+	printf("FAILED: Sieve Buffer Size Test\n");
+}
+printf("--------------------------------------------------\n\n");
+
+// Retrieve MPI parameters set via the H5Tuner
+MPI_Info_create(&info_test);
+
+ret = H5Pget_fapl_mpio(acc_tpl1, &comm_test, &info_test);
+assert(ret != FAIL);
+MESG("H5Pget_fapl_mpio succeed");
+
+
+printf("MPI info keys\n" );
+// printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+if(info_test == MPI_INFO_NULL) {
+				printf("MPI info object is null! No keys are available.\n");
+}
+else {
+	MPI_Info_get_nkeys(info_test, &nkeys_test);
+	printf("MPI info has %d keys\n", nkeys_test);
+	if (nkeys_test <= 0) {
+		printf("MPI info has no keys\n");
+	}
+	else {
+		printf("MPI info has %d keys\n", nkeys_test);
+		for ( i_test=0; i_test < nkeys_test; i_test++) {
+			MPI_Info_get_nthkey( info_test, i_test, key );
+			MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
+			printf( "Info values for key %s is %s\n", key, value );
+			//fflush(stdout);
+		}
+	}
+	MPI_Info_free(&info_test);
+}
+// end of H5Tuner tests
+// ---------------------------------------
+
 
     /* Release file-access template */
     ret=H5Pclose(acc_tpl1);
@@ -646,9 +740,9 @@ phdf5writeAll(char *filename)
 
     /* Dataset1: each process takes a block of rows. */
     slab_set(start, count, stride, BYROW);
-if (verbose)
-    printf("start[]=(%lu,%lu), count[]=(%lu,%lu), total datapoints=%lu\n",
-	(unsigned long)start[0], (unsigned long)start[1],
+		if (verbose)
+    	printf("start[]=(%lu,%lu), count[]=(%lu,%lu), total datapoints=%lu\n",
+				(unsigned long)start[0], (unsigned long)start[1],
         (unsigned long)count[0], (unsigned long)count[1],
         (unsigned long)(count[0]*count[1]));
 
@@ -669,8 +763,8 @@ if (verbose)
     dataset_fill(start, count, stride, &data_array1[0][0]);
     MESG("data_array initialized");
     if (verbose){
-	MESG("data_array created");
-	dataset_print(start, count, stride, &data_array1[0][0]);
+			MESG("data_array created");
+			dataset_print(start, count, stride, &data_array1[0][0]);
     }
 
     /* set up the collective transfer properties list */
@@ -695,9 +789,9 @@ if (verbose)
 
     /* Dataset2: each process takes a block of columns. */
     slab_set(start, count, stride, BYCOL);
-if (verbose)
-    printf("start[]=(%lu,%lu), count[]=(%lu,%lu), total datapoints=%lu\n",
-	(unsigned long)start[0], (unsigned long)start[1],
+		if (verbose)
+    	printf("start[]=(%lu,%lu), count[]=(%lu,%lu), total datapoints=%lu\n",
+				(unsigned long)start[0], (unsigned long)start[1],
         (unsigned long)count[0], (unsigned long)count[1],
         (unsigned long)(count[0]*count[1]));
 
@@ -705,8 +799,8 @@ if (verbose)
     dataset_fill(start, count, stride, &data_array1[0][0]);
     MESG("data_array initialized");
     if (verbose){
-	MESG("data_array created");
-	dataset_print(start, count, stride, &data_array1[0][0]);
+			MESG("data_array created");
+			dataset_print(start, count, stride, &data_array1[0][0]);
     }
 
     /* create a file dataspace independently */
