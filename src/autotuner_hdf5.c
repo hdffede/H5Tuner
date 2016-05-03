@@ -105,7 +105,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 		// TODO: Change this strstr() function call with a use of basename!
 		if((node_file_name == NULL) || (strstr(filename, node_file_name) != NULL))  {
 				#ifdef DEBUG
-				  printf("H5Tuner setting %s: %s\n", parameter_name, node->child->value.text.string);
+				  printf("H5Tuner: setting %s: %s\n", parameter_name, node->child->value.text.string);
 				#endif
 			if(strcmp(parameter_name, "sieve_buf_size") == 0) {
 				int ierr = H5Pset_sieve_buf_size(fapl_id, atoi(node->child->value.text.string));
@@ -114,7 +114,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 				char *threshold = strtok(node->child->value.text.string, ",");
 				char *alignment = strtok(NULL, ",");
 				#ifdef DEBUG
-				  printf("Threshold=%s; Alignment=%s\n", threshold, alignment);
+				  printf("H5Tuner: setting Threshold=%s; Alignment=%s\n", threshold, alignment);
 				#endif
 
 				int ierr = H5Pset_alignment(fapl_id, atoi(threshold), atoi(alignment));
@@ -122,7 +122,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 			else if(strcmp(parameter_name, "chunk") == 0) {
 				const char* variable_name = mxmlElementGetAttr(node, "VariableName");
 				#ifdef DEBUG
-				  printf("VariableName: %s\n", variable_name);
+				  printf("H5Tuner: VariableName: %s\n", variable_name);
 				#endif
 
 				if(variable_name == NULL || (variable_name != NULL && strcmp(variable_name, filename) == 0)) {
@@ -143,14 +143,14 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 				    if(chunk_arr[0] > dims[0])
 					    return 0;
 				    #ifdef DEBUG
-				      printf("Setting chunk[0] for %s -> %d\n", filename, chunk_arr[0]);
+				      printf("H5Tuner: Setting chunk[0] for %s -> %d\n", filename, chunk_arr[0]);
 				    #endif
 				    for(i = 1; i < ndims; i++) {
 					    chunk_arr[i] = atoi(strtok(NULL, ","));
 				    	if(chunk_arr[i] > dims[i])
 					      return 0;
 				    	#ifdef DEBUG
-				    	  printf("Setting chunk[%d] for %s -> %d\n", i, filename, chunk_arr[i]);
+				    	  printf("H5Tuner: Setting chunk[%d] for %s -> %d\n", i, filename, chunk_arr[i]);
 				    	#endif
 				    }
 
