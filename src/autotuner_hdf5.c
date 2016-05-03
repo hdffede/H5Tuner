@@ -252,7 +252,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	#ifdef DEBUG
 	  MPI_Info_get_nkeys(orig_info, &nkeys);
-	  printf("H5Tuner: completed parameters setting \n";
+	  printf("H5Tuner: completed parameters setting \n");
     //printf("H5Tuner created MPI_Info object has %d keys!\n", nkeys);
 	#endif
 
