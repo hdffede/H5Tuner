@@ -27,7 +27,7 @@ typedef int herr_t;
 	{ \
 		__fake_ ## func = dlsym(RTLD_NEXT, #func); \
 		if(!(__fake_ ## func)) { \
-			fprintf(stderr, "LibAutoTuner failed to map symbol: %s\n", #func); \
+			fprintf(stderr, "H5Tuner failed to map symbol: %s\n", #func); \
 			exit(1); \
 		} \
 	}
@@ -212,7 +212,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	if(ret < 0) {
 		fprintf(stderr, "Error in calling H5Pget_fapl(). Returning...\n");
 		#ifdef DEBUG
-	  	printf("LibAutoTuner: calling H5Fcreate\n");
+	  	printf("H5Tuner: calling H5Fcreate\n");
 		#endif
 
 		ret = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
@@ -221,7 +221,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	if(orig_info == MPI_INFO_NULL) {
 		#ifdef DEBUG
-		  printf("orig_info is null! creating a new one!\n");
+		  printf("H5Tuner: found no MPI_Info object and is creating a new one!\n");
 		#endif
 		MPI_Info_create(&orig_info);
 	}
@@ -234,7 +234,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	#ifdef DEBUG
 	  int nkeys = -1;
 	  MPI_Info_get_nkeys(orig_info, &nkeys);
-	  printf("orig_info has %d keys\n", nkeys);
+	  printf("H5Tuner: MPI_Info object has %d keys\n", nkeys);
 	#endif
 
 	set_gpfs_parameter(tree, "IBM_lockless_io", filename);
@@ -252,14 +252,15 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	#ifdef DEBUG
 	  MPI_Info_get_nkeys(orig_info, &nkeys);
-	  printf("new orig_info has %d keys!\n", nkeys);
+	  printf("H5Tuner: completed parameters setting \n";
+    //printf("H5Tuner created MPI_Info object has %d keys!\n", nkeys);
 	#endif
 
 	if(driver == H5FD_MPIO) {
 		ret = H5Pset_fapl_mpio(fapl_id, orig_comm, orig_info);
 	}
 	else {
-		fprintf(stderr, "AT Library supports mpio drivers only(). Returning...\n");
+		fprintf(stderr, "H5Tuner Library supports mpio drivers only(). Returning...\n");
 		return ret;
 	}
 
@@ -271,7 +272,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	fclose(fp);
 
 	#ifdef DEBUG
-	  printf("LibAutoTuner: calling H5Fcreate!\n");
+	  printf("\nH5Tuner: calling H5Fcreate!\n");
 	#endif
 	ret = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
 
@@ -284,15 +285,15 @@ herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, h
 	MAP_OR_FAIL(H5Dwrite);
 
 	#ifdef DEBUG
-	  printf("dataset_id: %d\n", dataset_id);
-	  printf("mem_type_id: %d\n", mem_type_id);
-	  printf("mem_space_id: %d\n", mem_space_id);
-  	printf("file_space_id: %d\n", file_space_id);
-  	printf("xfer_plist_id: %d\n", xfer_plist_id);
+	  //printf("dataset_id: %d\n", dataset_id);
+	  //printf("mem_type_id: %d\n", mem_type_id);
+	  //printf("mem_space_id: %d\n", mem_space_id);
+  	//printf("file_space_id: %d\n", file_space_id);
+  	//printf("xfer_plist_id: %d\n", xfer_plist_id);
 	#endif
 
 	#ifdef DEBUG
-	  printf("LibAutoTuner: calling H5Dwrite!\n");
+	  printf("\nH5Tuner: calling H5Dwrite!\n");
 	#endif
 	ret = __fake_H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
 
