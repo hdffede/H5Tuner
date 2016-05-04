@@ -4,7 +4,7 @@
 * All rights reserved.
 *
 * This file is part of h5tuner. The full h5tuner copyright notice,
-*  including terms governing use, modification, and redistribution, is
+* including terms governing use, modification, and redistribution, is
 * contained in the file COPYING, which can be found at the root of the
 * source code distribution tree.  If you do not have access to this file,
 * you may request a copy from help@hdfgroup.org.
@@ -200,7 +200,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
   // char *config_file = getenv("AT_CONFIG_FILE");
   // char *file_path = config_file ;
   #ifdef DEBUG
-	  printf("H5Tuner: Loading parameters file: %s\n", file_path);
+	  printf("\nH5Tuner: Loading parameters file: %s\n", file_path);
   #endif
 
 	fp = fopen(file_path, "r");
@@ -225,7 +225,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	if(ret < 0) {
 		fprintf(stderr, "Error in calling H5Pget_fapl(). Returning...\n");
 		#ifdef DEBUG
-	  	printf("H5Tuner: calling H5Fcreate\n");
+	  	printf("H5Tuner: calling H5Fcreate.\n");
 		#endif
 
 		ret = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
@@ -234,13 +234,13 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	if(orig_info == MPI_INFO_NULL) {
 		#ifdef DEBUG
-		  printf("H5Tuner: found no MPI_Info object and is creating a new one!\n");
+		  printf("H5Tuner: found no MPI_Info object and is creating a new one.\n");
 		#endif
 		MPI_Info_create(&orig_info);
 	}
 	else {
 		#ifdef DEBUG
-		  printf("H5Tuner: MPI_Info object is not null. Continuing\n");
+		  printf("H5Tuner: MPI_Info object is not null. Continuing.\n");
 		#endif
 	}
 
@@ -285,7 +285,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	fclose(fp);
 
 	#ifdef DEBUG
-	  printf("\nH5Tuner: calling H5Fcreate!\n");
+	  printf("\nH5Tuner: calling H5Fcreate.\n");
 	#endif
 	ret = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
 
@@ -306,7 +306,7 @@ herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, h
 	#endif
 
 	#ifdef DEBUG
-	  printf("\nH5Tuner: calling H5Dwrite!\n");
+	  printf("\nH5Tuner: calling H5Dwrite.\n");
 	#endif
 	ret = __fake_H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
 
@@ -324,7 +324,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
     strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
-      printf("H5Tuner: Loading parameters file for H5Dcreate1: %s\n", file_path);
+      printf("\nH5Tuner: Loading parameters file for H5Dcreate1: %s\n", file_path);
     #endif
 
     fp = fopen(file_path, "r");
@@ -333,7 +333,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
     hid_t chunked_pid = set_hdf5_parameter(tree, "chunk", name, space_id);
 
     #ifdef DEBUG
-  	  printf("\nH5Tuner: calling H5Dcreate1!\n");
+  	  printf("\nH5Tuner: calling H5Dcreate1.\n");
   	#endif
 
     if (chunked_pid == -1) {
@@ -361,7 +361,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
-      printf("H5Tuner: Loading parameters file for H5Dcreate2: %s\n", file_path);
+      printf("\nH5Tuner: Loading parameters file for H5Dcreate2: %s\n", file_path);
     #endif
 
     fp = fopen(file_path, "r");
@@ -370,7 +370,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     hid_t chunked_pid = set_hdf5_parameter(tree, "chunk", name, space_id);
 
     #ifdef DEBUG
-  	  printf("\nH5Tuner: calling H5Dcreate1!\n");
+  	  printf("\nH5Tuner: calling H5Dcreate2.\n");
   	#endif
 
     if (chunked_pid == -1) {
@@ -380,7 +380,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
 	     ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
     }
     else {
-      printf("H5Tuner: Can not set chunked property list since dcpl_id is not 0!\n");
+      printf("H5Tuner: Cannot set chunked property list since dcpl_id is not 0.\n");
        ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, chunked_pid, dapl_id);
     }
 
