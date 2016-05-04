@@ -289,9 +289,14 @@ phdf5writeInd(char *filename)
 	  // ------------------------------------------------
 
 		// Retrieve MPI parameters set via the H5Tuner
-
-		printf("\n\nVersion of the H5Tuner loaded: %s\n\n", libtuner_file);
-
+		printf("\n\n--------------------------------------------------\n");
+		if ( libtuner_file != NULL ) {
+			printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+		}
+		else {
+			printf("No H5Tuner currently loaded: %s\n\n");
+		}
+		printf("--------------------------------------------------\n");
 
 		// Retrieve HDF5 Threshold and Alignment
 		hsize_t alignment[2];
