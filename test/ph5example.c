@@ -290,7 +290,7 @@ phdf5writeInd(char *filename)
 
 		// Retrieve MPI parameters set via the H5Tuner
 		printf("\n\n--------------------------------------------------\n");
-		if ( (libtuner_file != NULL ) && (strlen(libtuner_file > 1) ){
+		if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ){
 			printf("Version of the H5Tuner loaded: \n%s\n", libtuner_file);
 		}
 		else {
