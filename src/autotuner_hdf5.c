@@ -187,7 +187,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
   // char *config_file = getenv("AT_CONFIG_FILE");
   // char *file_path = config_file ;
   #ifdef DEBUG
-	  printf("Loading conf file: %s\n", file_path);
+	  printf("H5Tuner: Loading parameters file: %s\n", file_path);
   #endif
 
 	fp = fopen(file_path, "r");
@@ -205,7 +205,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 		ret = H5Pget_fapl_mpio(fapl_id, &orig_comm, &orig_info);
 	}
 	else {
-		fprintf(stderr, "AT Library supports mpio drivers only(). Returning...\n");
+		fprintf(stderr, "H5Tuner Library supports mpio drivers only(). Returning...\n");
 		return ret;
 	}
 
@@ -227,7 +227,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	}
 	else {
 		#ifdef DEBUG
-		  printf("orig_info is not null! continuing\n");
+		  printf("H5Tuner: MPI_Info object is not null. Continuing\n");
 		#endif
 	}
 
@@ -311,13 +311,17 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
     strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
-      printf("Loading conf file for H5Dcreate1: %s\n", file_path);
+      printf("H5Tuner: Loading parameters file for H5Dcreate1: %s\n", file_path);
     #endif
 
     fp = fopen(file_path, "r");
     tree = mxmlLoadFile(NULL, fp, MXML_TEXT_CALLBACK);
 
     hid_t chunked_pid = set_hdf5_parameter(tree, "chunk", name, space_id);
+
+    #ifdef DEBUG
+  	  printf("\nH5Tuner: calling H5Dcreate1!\n");
+  	#endif
 
     if (chunked_pid == -1) {
 		    ret = __fake_H5Dcreate1(loc_id, name, type_id, space_id, dcpl_id);
@@ -326,7 +330,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
 		    ret = __fake_H5Dcreate1(loc_id, name, type_id, space_id, chunked_pid);
     }
     else {
-		    printf("Cannot set chunked property list since dcpl_id is not 0!\n");
+		    printf("H5Tuner: Cannot set chunked property list since dcpl_id is not 0!\n");
 		    ret = __fake_H5Dcreate1(loc_id, name, type_id, space_id, dcpl_id);
     }
 
@@ -344,13 +348,17 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
-      printf("Loading conf file for H5Dcreate2: %s\n", file_path);
+      printf("H5Tuner: Loading parameters file for H5Dcreate2: %s\n", file_path);
     #endif
 
     fp = fopen(file_path, "r");
     tree = mxmlLoadFile(NULL, fp, MXML_TEXT_CALLBACK);
 
     hid_t chunked_pid = set_hdf5_parameter(tree, "chunk", name, space_id);
+
+    #ifdef DEBUG
+  	  printf("\nH5Tuner: calling H5Dcreate1!\n");
+  	#endif
 
     if (chunked_pid == -1) {
 	     ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
@@ -359,7 +367,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
 	     ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
     }
     else {
-      printf("Can not set chunked property list since dcpl_id is not 0!\n");
+      printf("H5Tuner: Can not set chunked property list since dcpl_id is not 0!\n");
        ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, chunked_pid, dapl_id);
     }
 
