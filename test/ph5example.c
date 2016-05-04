@@ -348,6 +348,8 @@ phdf5writeInd(char *filename)
 		MESG("H5Pget_fapl_mpio succeed");
 
 		printf("-------------------------------------------------\n" );
+		printf("Testing parameters values via MPI_Info\n" );
+		printf("-------------------------------------------------\n" );
 		if(info_test == MPI_INFO_NULL) {
 						printf("MPI info object is null. No keys are available.\n");
 		}
@@ -693,6 +695,8 @@ assert(ret != FAIL);
 MESG("H5Pget_fapl_mpio succeed");
 
 
+printf("-------------------------------------------------\n" );
+printf("Testing parameters values via MPI_Info\n" );
 printf("-------------------------------------------------\n" );
 if(info_test == MPI_INFO_NULL) {
 				printf("MPI info object is null. No keys are available.\n");
