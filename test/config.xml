@@ -13,7 +13,7 @@
 
 	<Parallel_File_System>
 		<striping_factor>11</striping_factor>
-		<striping_factor FileName="ParaEg0.h5">4</striping_factor>
+		<striping_factor FileName="ParaEg0.h5">7</striping_factor>
 		<striping_factor FileName="ParaEg1.h5">1</striping_factor>
 		<striping_unit>6556</striping_unit>
 	</Parallel_File_System>
