@@ -355,7 +355,7 @@ phdf5writeInd(char *filename)
 		}
 		else {
 			MPI_Info_get_nkeys(info_test, &nkeys_test);
-			printf("MPI info has %d keys\n", nkeys_test);
+			//printf("MPI info has %d keys\n", nkeys_test);
 			if (nkeys_test <= 0) {
 				printf("MPI info has no keys\n");
 			}
@@ -703,7 +703,7 @@ if(info_test == MPI_INFO_NULL) {
 }
 else {
 	MPI_Info_get_nkeys(info_test, &nkeys_test);
-	printf("MPI info has %d keys\n", nkeys_test);
+	//printf("MPI info has %d keys\n", nkeys_test);
 	if (nkeys_test <= 0) {
 		printf("MPI info has no keys\n");
 	}
