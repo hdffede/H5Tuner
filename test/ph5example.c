@@ -347,11 +347,9 @@ phdf5writeInd(char *filename)
 		assert(ret != FAIL);
 		MESG("H5Pget_fapl_mpio succeed");
 
-
-		printf("MPI info keys\n" );
-		// printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+		printf("-------------------------------------------------\n" );
 		if(info_test == MPI_INFO_NULL) {
-						printf("MPI info object is null! No keys are available.\n");
+						printf("MPI info object is null. No keys are available.\n");
 		}
 		else {
 			MPI_Info_get_nkeys(info_test, &nkeys_test);
@@ -364,10 +362,11 @@ phdf5writeInd(char *filename)
 				for ( i_test=0; i_test < nkeys_test; i_test++) {
 					MPI_Info_get_nthkey( info_test, i_test, key );
 					MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
-					printf( "Info values for key %s is %s\n", key, value );
+					printf( "Retrieved value for key %s is %s\n", key, value );
 					//fflush(stdout);
 				}
 			}
+			printf("-------------------------------------------------\n" );
 			MPI_Info_free(&info_test);
 		}
 		// end of H5Tuner tests
@@ -634,8 +633,14 @@ phdf5writeAll(char *filename)
 // ------------------------------------------------
 
 // Retrieve MPI parameters set via the H5Tuner
-
-printf("\n\nVersion of the H5Tuner loaded: %s\n\n", libtuner_file);
+printf("\n\n--------------------------------------------------\n");
+if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ){
+	printf("Version of the H5Tuner loaded: \n%s\n", libtuner_file);
+}
+else {
+	printf("No H5Tuner currently loaded.\n");
+}
+printf("--------------------------------------------------\n");
 
 
 // Retrieve HDF5 Threshold and Alignment
@@ -688,10 +693,9 @@ assert(ret != FAIL);
 MESG("H5Pget_fapl_mpio succeed");
 
 
-printf("MPI info keys\n" );
-// printf("Version of the H5Tuner loaded: %s\n\n", libtuner_file);
+printf("-------------------------------------------------\n" );
 if(info_test == MPI_INFO_NULL) {
-				printf("MPI info object is null! No keys are available.\n");
+				printf("MPI info object is null. No keys are available.\n");
 }
 else {
 	MPI_Info_get_nkeys(info_test, &nkeys_test);
@@ -704,10 +708,11 @@ else {
 		for ( i_test=0; i_test < nkeys_test; i_test++) {
 			MPI_Info_get_nthkey( info_test, i_test, key );
 			MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
-			printf( "Info values for key %s is %s\n", key, value );
+			printf( "Retrieved value for key %s is %s\n", key, value );
 			//fflush(stdout);
 		}
 	}
+	printf("-------------------------------------------------\n" );
 	MPI_Info_free(&info_test);
 }
 // end of H5Tuner tests
@@ -825,8 +830,8 @@ else {
     dataset_fill(start, count, stride, &data_array1[0][0]);
     MESG("data_array initialized");
     if (verbose){
-	MESG("data_array created");
-	dataset_print(start, count, stride, &data_array1[0][0]);
+			MESG("data_array created");
+			dataset_print(start, count, stride, &data_array1[0][0]);
     }
 
     /* set up the collective transfer properties list */
@@ -895,7 +900,7 @@ phdf5readAll(char *filename)
     MPI_Info info = MPI_INFO_NULL;
 
     if (verbose)
-	printf("Collective read test on file %s\n", filename);
+			printf("Collective read test on file %s\n", filename);
 
     /* -------------------
      * OPEN AN HDF5 FILE
