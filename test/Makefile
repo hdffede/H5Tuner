@@ -25,7 +25,8 @@ H5ATLIB= -L${H5TUNEROOT}/lib -lautotuner_static
 ADD_FLAGS = -DPARALLEL_IO
 
 %.o: %.c $(DEPS)
-	$(CC) -g -c -o $@ $< $(CFLAGS) $(H5FLAGS) $(ADD_FLAGS)
+	#$(CC) -g -c -o $@ $< $(CFLAGS) $(H5FLAGS) $(ADD_FLAGS)
+	$(CC) -g -o $@ $< -I. -shlib
 
 vpicio_uni: vpicio_uni.o
 	$(CC) -o vpicio_uni vpicio_uni.o -I. $(LIB) $(H5PLIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS)
@@ -36,9 +37,9 @@ ph5example: ph5example.o
 	#rm ph5example.o
 	$(CC) -g -o ph5example ph5example.o -I. -shlib
 
-AT: vpicio_uni.o
-	$(CC) -o vpicio_uni_at vpicio_uni.o -I. $(LIB) $(H5PLIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS) $(H5ATLIB) -Wl,-wrap,H5Fcreate -Wl,-wrap,H5Fopen
-	rm vpicio_uni.o
+test01: test01.o
+	$(CC) -g -o test01 test01.o -I. -shlib
+
 
 ph5example_at: ph5example.o
 	$(CC) -g -o ph5example_at ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS) $(H5ATLIB) -Wl,-wrap,H5Fcreate -Wl,-wrap,H5Fopen --verbose
@@ -47,10 +48,8 @@ ph5example_at: ph5example.o
 clean_ph5example:
 	rm  -f ph5example ph5example_at
 
-clean_vpic:
-	rm  -f vpicio_uni vpicio_uni_at
 
 clean:
-	rm  -f vpicio_uni vpicio_uni_at
+	rm  -f test01 test01.o
 	rm  -f ph5example ph5example_at
 	rm  -f ph5example.o ph5example_at.o
