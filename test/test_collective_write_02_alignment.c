@@ -255,13 +255,6 @@ phdf5writeInd(char *filename)
     MPI_Comm comm = MPI_COMM_WORLD;
     MPI_Info info = MPI_INFO_NULL;
 
-		/* in support of H5Tuner Test */
-		MPI_Comm comm_test = MPI_COMM_WORLD;
-    MPI_Info info_test ;
-    int i_test, nkeys_test, flag_test;
-    char key[MPI_MAX_INFO_KEY], value[MPI_MAX_INFO_VAL+1];
-    char *libtuner_file = getenv("LD_PRELOAD");
-    /* in support of H5Tuner Test */
 
     if (verbose)
 	  printf("Independent write test on file %s\n", filename);
@@ -284,52 +277,6 @@ phdf5writeInd(char *filename)
     assert(fid1 != FAIL);
     MESG("H5Fcreate succeed");
 
-	  // ------------------------------------------------
-		// H5Tuner tests
-	  // ------------------------------------------------
-
-		// Retrieve MPI parameters set via the H5Tuner
-		printf("\n\n--------------------------------------------------\n");
-		if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ){
-			printf("Version of the H5Tuner loaded: \n%s\n", libtuner_file);
-		}
-		else {
-			printf("No H5Tuner currently loaded.\n");
-		}
-		printf("--------------------------------------------------\n");
-
-		// Retrieve HDF5 Threshold and Alignment
-		hsize_t alignment[2];
-		size_t sieve_buf_size;
-		alignment[0]= 0; // threshold value
-		alignment[1]= 0; // alignment value
-		int ierr = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
-		assert(ierr != FAIL);
-		MESG("H5Pget_alignment succeed. Values Retrieved");
-
-		if ( verbose ) {
-			printf("\n\n--------------------------------------------------\n");
-			printf("Testing values for Threshold and Alignment\n");
-			printf("--------------------------------------------------\n");
-			printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
-			printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
-		}
-		// Check Threshold
-		if ( alignment[0] == 88 ) {
-			if (verbose)
-			printf("PASSED: Threshold Test\n");
-		}
-		else {
-			ierr = FAIL;
-			if ( verbose)
-			printf("FAILED: Threshold Test\n");
-		}
-		assert(ierr != FAIL);
-		MESG("Threshold Test succeeded");
-
-
-		// end of H5Tuner tests
-		// ------------------------------------------------
 
     /* Release file-access template */
     ret = H5Pclose(acc_tpl1);
