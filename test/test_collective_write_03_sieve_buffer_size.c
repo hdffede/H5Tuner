@@ -549,32 +549,30 @@ else {
 printf("--------------------------------------------------\n");
 
 
-		// Retrieve HDF5 Threshold and Alignment
-		hsize_t alignment[2];
-		alignment[0]= 0; // threshold value
-		alignment[1]= 0; // alignment value
-		ret = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
+		// Retrieve HDF5 sieve buffer size
+		size_t sieve_buf_size;
+		ret = H5Pget_sieve_buf_size(acc_tpl1, &sieve_buf_size);
 		assert(ret != FAIL);
-		MESG("H5Pget_alignment succeed. Values Retrieved");
-
+		MESG("H5Pget_sieve_buf_size succeed. Value Retrieved");
 		if ( verbose ) {
 			printf("\n\n--------------------------------------------------\n");
-			printf("Testing values for Alignment\n");
+			printf("Testing values for Sieve Buffer Size\n");
 			printf("--------------------------------------------------\n");
-			printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
+			printf("Test value set to:77 \nRetrieved Sieve Buffer Size=%lu\n", sieve_buf_size);
 		}
-		// Check Threshold
-		if ( alignment[1] == 44 ) {
-			if (verbose)
-			printf("PASSED: Alignment Test\n");
+		// Check sieve buffer size
+		if ( (int) sieve_buf_size == 77 ) {
+			if ( verbose )
+				printf("PASSED: Sieve Buffer Size Test\n");
 		}
 		else {
 			ret = FAIL;
 			nerrors++;
-			printf("FAILED: Alignment Test\n");
+			printf("FAILED: Sieve Buffer Size Test\n");
 		}
-		assert(ret != FAIL);
-		MESG("Alignment Test succeeded");
+
+assert(ret != FAIL);
+MESG("Sieve Buffer Size Test succeeded");
 
 
 // end of H5Tuner tests
@@ -1165,7 +1163,7 @@ finish:
 	    printf("***H5Tuner tests detected %d errors***\n", nerrors);
 	else{
 	    printf("===================================\n");
-	    printf("H5Tuner Collective Write Alignment tests finished with no errors\n");
+	    printf("H5Tuner Collective Write Sieve Buffer Size tests finished with no errors\n");
 	    printf("===================================\n");
 	}
     }
