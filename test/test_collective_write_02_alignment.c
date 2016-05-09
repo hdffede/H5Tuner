@@ -551,18 +551,16 @@ printf("--------------------------------------------------\n");
 
 		// Retrieve HDF5 Threshold and Alignment
 		hsize_t alignment[2];
-		size_t sieve_buf_size;
 		alignment[0]= 0; // threshold value
 		alignment[1]= 0; // alignment value
-		int ierr = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
-		assert(ierr != FAIL);
+		ret = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
+		assert(ret != FAIL);
 		MESG("H5Pget_alignment succeed. Values Retrieved");
 
 		if ( verbose ) {
 			printf("\n\n--------------------------------------------------\n");
-			printf("Testing values for Threshold and Alignment\n");
+			printf("Testing values for Alignment\n");
 			printf("--------------------------------------------------\n");
-			printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
 			printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
 		}
 		// Check Threshold
@@ -571,11 +569,11 @@ printf("--------------------------------------------------\n");
 			printf("PASSED: Alignment Test\n");
 		}
 		else {
-			ierr = FAIL;
-			if ( verbose)
+			ret = FAIL;
+			nerrors++
 			printf("FAILED: Alignment Test\n");
 		}
-		assert(ierr != FAIL);
+		assert(ret != FAIL);
 		MESG("Alignment Test succeeded");
 
 

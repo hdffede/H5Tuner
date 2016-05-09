@@ -300,12 +300,12 @@ phdf5writeInd(char *filename)
 
 		// Retrieve HDF5 Threshold and Alignment
 		hsize_t alignment[2];
-		size_t sieve_buf_size;
 		alignment[0]= 0; // threshold value
 		alignment[1]= 0; // alignment value
 		ret = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
 		assert(ret != FAIL);
 		MESG("H5Pget_alignment succeed. Values Retrieved");
+
 		if (verbose) {
 			printf("\n\n--------------------------------------------------\n");
 			printf("Testing values for Alignment\n");
