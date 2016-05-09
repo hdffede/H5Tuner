@@ -28,17 +28,19 @@ ADD_FLAGS = -DPARALLEL_IO
 	#$(CC) -g -c -o $@ $< $(CFLAGS) $(H5FLAGS) $(ADD_FLAGS)
 	$(CC) -g -o $@ $< -I. -shlib
 
-vpicio_uni: vpicio_uni.o
-	$(CC) -o vpicio_uni vpicio_uni.o -I. $(LIB) $(H5PLIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS)
-	rm vpicio_uni.o
-
 ph5example: ph5example.o
 	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS) --verbose
 	#rm ph5example.o
 	$(CC) -g -o ph5example ph5example.o -I. -shlib
 
-test01: test01.o
-	$(CC) -g -o test01 test01.o -I. -shlib
+test_indipendent_write_01: test_indipendent_write_01_threshold.o
+	$(CC) -g -o test_indipendent_write_01_threshold test_indipendent_write_01_threshold.o -I. -shlib
+
+test_indipendent_write_02: test_indipendent_write_02_alignment.o
+	$(CC) -g -o test_indipendent_write_02_alignment test_indipendent_write_02_alignment.o -I. -shlib
+
+test_indipendent_write_03: test_indipendent_write_03_sieve_buffer_size.o
+	$(CC) -g -o test_indipendent_write_03_sieve_buffer_size test_indipendent_write_03_sieve_buffer_size.o -I. -shlib
 
 
 ph5example_at: ph5example.o
@@ -50,6 +52,8 @@ clean_ph5example:
 
 
 clean:
-	rm  -f test01 test01.o
+	rm  -f test_indipendent_write_01_threshold test_indipendent_write_01_threshold.o
+	rm  -f test_indipendent_write_02_alignment test_indipendent_write_02_alignment.o
+	rm  -f test_indipendent_write_03_sieve_buffer_size test_indipendent_write_03_sieve_buffer_size.o
 	rm  -f ph5example ph5example_at
 	rm  -f ph5example.o ph5example_at.o
