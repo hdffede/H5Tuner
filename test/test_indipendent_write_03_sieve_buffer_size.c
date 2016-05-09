@@ -288,7 +288,7 @@ phdf5writeInd(char *filename)
 		// H5Tuner tests
 	  // ------------------------------------------------
 
-		// Retrieve MPI parameters set via the H5Tuner
+		// Retrieve parameters set via the H5Tuner
 		printf("\n\n--------------------------------------------------\n");
 		if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ){
 			printf("Version of the H5Tuner loaded: \n%s\n", libtuner_file);
@@ -300,10 +300,11 @@ phdf5writeInd(char *filename)
 
 
 				// Retrieve HDF5 sieve buffer size
+				size_t sieve_buf_size;
 				ret = H5Pget_sieve_buf_size(acc_tpl1, &sieve_buf_size);
 				assert(ret != FAIL);
+				MESG("H5Pget_sieve_buf_size succeed. Value Retrieved");
 				if ( verbose ) {
-					MESG("H5Pget_sieve_buf_size succeed. Value Retrieved");
 					printf("\n\n--------------------------------------------------\n");
 					printf("Testing values for Sieve Buffer Size\n");
 					printf("--------------------------------------------------\n");
@@ -311,9 +312,8 @@ phdf5writeInd(char *filename)
 			}
 				// Check sieve buffer size
 				if ( (int) sieve_buf_size == 77 ) {
-					if ( verbose ) {
+					if ( verbose )
 						printf("PASSED: Sieve Buffer Size Test\n");
-					}
 				}
 				else {
 					ret = FAIL;
