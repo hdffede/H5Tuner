@@ -310,14 +310,17 @@ phdf5writeInd(char *filename)
 		printf("Testing parameters values via MPI_Info\n" );
 		printf("-------------------------------------------------\n" );
 		if(info_test == MPI_INFO_NULL) {
-						printf("MPI info object is null. No keys are available.\n");
+			ret = FAIL;
+			nerrors++;
+			printf("MPI info object is null. No keys are available.\n");
 		}
 		else {
 			MPI_Info_get_nkeys(info_test, &nkeys_test);
 			//printf("MPI info has %d keys\n", nkeys_test);
 			if (nkeys_test <= 0) {
-				if ( verbose )
-				  printf("MPI info has no keys\n");
+				ret = FAIL;
+				nerrors++;
+				printf("MPI info has no keys\n");
 			}
 			else {
 				if ( verbose )
@@ -334,7 +337,7 @@ phdf5writeInd(char *filename)
 					  	  printf( "Retrieved value for key %s is %s\n", key, value );
 							}
 						}
-						else {
+						else { // striping factor retrieved does not match the setting.
 							ret = FAIL;
 							nerrors++;
 							printf("FAILED: Striping Factor Test\n");
@@ -345,11 +348,11 @@ phdf5writeInd(char *filename)
 			}
 
 			MPI_Info_free(&info_test);
-
+		  }
 			assert(ret != FAIL);
 			MESG("Striping Factor Test succeeded");
 
-		}
+
 		// end of H5Tuner tests
 		// ------------------------------------------------
 
