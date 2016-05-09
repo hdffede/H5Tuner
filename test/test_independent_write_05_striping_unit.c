@@ -329,7 +329,7 @@ phdf5writeInd(char *filename)
 					// Check the Striping Factor key
 					if ( strcmp(key,"striping_unit") == 0 ) {
 						// Check the striping unit against a preset value
-						if ( (strcmp(value, "6556") == 0)  {
+						if ( strcmp(value, "6556") == 0)  {
 							if ( verbose ) {
 								printf("PASSED: Striping Unit Test\n");
 					  	  printf( "Retrieved value for key %s is %s\n", key, value );
