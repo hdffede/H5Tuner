@@ -290,7 +290,7 @@ phdf5writeInd(char *filename)
 
 		// Retrieve parameters set via the H5Tuner
 		printf("\n\n--------------------------------------------------\n");
-		if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ){
+		if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ) {
 			printf("Version of the H5Tuner loaded: \n%s\n", libtuner_file);
 		}
 		else {
@@ -305,9 +305,8 @@ phdf5writeInd(char *filename)
 		alignment[1]= 0; // alignment value
 		ret = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
 		assert(ret != FAIL);
-		
+		MESG("H5Pget_alignment succeed. Values Retrieved");
 		if (verbose) {
-			MESG("H5Pget_alignment succeed. Values Retrieved");
 			printf("\n\n--------------------------------------------------\n");
 			printf("Testing values for Alignment\n");
 			printf("--------------------------------------------------\n");
@@ -315,8 +314,8 @@ phdf5writeInd(char *filename)
 		}
 		// Check Alignment
 		if ( alignment[1] == 44 ) {
-			if (verbose) {
-			printf("PASSED: Alignment Test\n");
+			if (verbose)
+				printf("PASSED: Alignment Test\n");
 		}
 		else {
 			ret = FAIL;
