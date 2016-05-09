@@ -331,7 +331,7 @@ phdf5writeInd(char *filename)
 					// Check the Striping Factor key
 					if ( strcmp(key,"striping_factor") == 0 ) {
 						// Check the striping factor against a preset value
-						if ( strcmp(value, "11") || strcmp(value, "7") || strcmp(value, "1") ) {
+						if ( (strcmp(value, "11") == 0) || (strcmp(value, "7") == 0) || (strcmp(value, "1")==0) ) {
 							if ( verbose ) {
 								printf("PASSED: Striping Factor Test\n");
 					  	  printf( "Retrieved value for key %s is %s\n", key, value );
@@ -341,6 +341,7 @@ phdf5writeInd(char *filename)
 							ret = FAIL;
 							nerrors++;
 							printf("FAILED: Striping Factor Test\n");
+							printf( "Retrieved value for key %s is %s\n", key, value );
 						}
 					}
 					//fflush(stdout);
@@ -1188,10 +1189,10 @@ main(int argc, char **argv)
 finish:
     if (mpi_rank == 0){		/* only process 0 reports */
 	if (nerrors)
-	    printf("***PHDF5 tests detected %d errors***\n", nerrors);
+	    printf("***H5Tuner tests detected %d errors***\n", nerrors);
 	else{
 	    printf("===================================\n");
-	    printf("PHDF5 tests finished with no errors\n");
+	    printf("H5Tuner Indipendent Write Striping Factor tests finished with no errors\n");
 	    printf("===================================\n");
 	}
     }
