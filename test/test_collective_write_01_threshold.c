@@ -570,7 +570,7 @@ if ( alignment[0] == 88 ) {
 }
 else {
 	ret = FAIL;
-	nerrors++
+	nerrors++;
 	printf("FAILED: Threshold Test\n");
 }
 assert(ret != FAIL);

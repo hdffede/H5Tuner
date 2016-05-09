@@ -308,7 +308,7 @@ phdf5writeInd(char *filename)
 		if ( verbose ) {
 			MESG("H5Pget_alignment succeed. Values Retrieved");
 			printf("\n\n--------------------------------------------------\n");
-			printf("Testing values for Threshold and Alignment\n");
+			printf("Testing values for Threshold\n");
 			printf("--------------------------------------------------\n");
 			printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
 		}
@@ -319,7 +319,7 @@ phdf5writeInd(char *filename)
 		}
 		else {
 			ret = FAIL;
-			nerrors++
+			nerrors++;
 			printf("FAILED: Threshold Test\n");
 		}
 		assert(ret != FAIL);
