@@ -300,7 +300,6 @@ phdf5writeInd(char *filename)
 
 		// Retrieve HDF5 Threshold and Alignment
 		hsize_t alignment[2];
-		size_t sieve_buf_size;
 		alignment[0]= 0; // threshold value
 		alignment[1]= 0; // alignment value
 		ret = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
@@ -316,14 +315,14 @@ phdf5writeInd(char *filename)
 		// Check Threshold
 		if ( alignment[0] == 88 ) {
 			if (verbose)
-			printf("PASSED: Threshold Test\n");
+			  printf("PASSED: Threshold Test\n");
 		}
 		else {
 			ret = FAIL;
 			nerrors++
 			printf("FAILED: Threshold Test\n");
 		}
-		assert(ierr != FAIL);
+		assert(ret != FAIL);
 		MESG("Threshold Test succeed");
 
 
