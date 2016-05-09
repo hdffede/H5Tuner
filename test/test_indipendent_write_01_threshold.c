@@ -264,7 +264,7 @@ phdf5writeInd(char *filename)
     /* in support of H5Tuner Test */
 
     if (verbose)
-	  printf("Independent write test on file %s\n", filename);
+	  	printf("Independent write test on file %s\n", filename);
 
     /* -------------------
      * START AN HDF5 FILE
@@ -288,7 +288,7 @@ phdf5writeInd(char *filename)
 		// H5Tuner tests
 	  // ------------------------------------------------
 
-		// Retrieve MPI parameters set via the H5Tuner
+		// Retrieve parameters set via the H5Tuner
 		printf("\n\n--------------------------------------------------\n");
 		if ( (libtuner_file != NULL) && (strlen(libtuner_file) > 1) ){
 			printf("Version of the H5Tuner loaded: \n%s\n", libtuner_file);
@@ -303,16 +303,15 @@ phdf5writeInd(char *filename)
 		size_t sieve_buf_size;
 		alignment[0]= 0; // threshold value
 		alignment[1]= 0; // alignment value
-		int ierr = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
-		assert(ierr != FAIL);
-		MESG("H5Pget_alignment succeed. Values Retrieved");
+		ret = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
+		assert(ret != FAIL);
 
 		if ( verbose ) {
+			MESG("H5Pget_alignment succeed. Values Retrieved");
 			printf("\n\n--------------------------------------------------\n");
 			printf("Testing values for Threshold and Alignment\n");
 			printf("--------------------------------------------------\n");
 			printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
-			printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
 		}
 		// Check Threshold
 		if ( alignment[0] == 88 ) {
@@ -320,12 +319,12 @@ phdf5writeInd(char *filename)
 			printf("PASSED: Threshold Test\n");
 		}
 		else {
-			ierr = FAIL;
-			if ( verbose)
+			ret = FAIL;
+			nerrors++
 			printf("FAILED: Threshold Test\n");
 		}
 		assert(ierr != FAIL);
-		MESG("Threshold Test succeeded");
+		MESG("Threshold Test succeed");
 
 
 		// end of H5Tuner tests
