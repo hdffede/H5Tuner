@@ -337,7 +337,7 @@ phdf5writeInd(char *filename)
 								printf( "Retrieved value for key %s is %s\n", key, value );
 							}
 						}
-						else { // striping factor retrieved does not match the setting.
+						else { // cb buffer size retrieved does not match the setting.
 							ret = FAIL;
 							nerrors++;
 							printf("FAILED: CB Buffer Size Test\n");

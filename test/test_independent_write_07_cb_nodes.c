@@ -298,38 +298,60 @@ phdf5writeInd(char *filename)
 		}
 		printf("--------------------------------------------------\n");
 
+		// Retrieve MPI parameters set via the H5Tuner
+		MPI_Info_create(&info_test);
 
-				// Retrieve MPI parameters set via the H5Tuner
-				MPI_Info_create(&info_test);
+		ret = H5Pget_fapl_mpio(acc_tpl1, &comm_test, &info_test);
+		assert(ret != FAIL);
+		MESG("H5Pget_fapl_mpio succeed");
 
-				ret = H5Pget_fapl_mpio(acc_tpl1, &comm_test, &info_test);
-				assert(ret != FAIL);
-				MESG("H5Pget_fapl_mpio succeed");
-
-				printf("-------------------------------------------------\n" );
-				printf("Testing parameters values via MPI_Info\n" );
-				printf("-------------------------------------------------\n" );
-				if(info_test == MPI_INFO_NULL) {
-								printf("MPI info object is null. No keys are available.\n");
-				}
-				else {
-					MPI_Info_get_nkeys(info_test, &nkeys_test);
-					//printf("MPI info has %d keys\n", nkeys_test);
-					if (nkeys_test <= 0) {
-						printf("MPI info has no keys\n");
-					}
-					else {
-						printf("MPI info has %d keys\n", nkeys_test);
-						for ( i_test=0; i_test < nkeys_test; i_test++) {
-							MPI_Info_get_nthkey( info_test, i_test, key );
-							MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
+		printf("-------------------------------------------------\n" );
+		printf("Testing parameters values via MPI_Info\n" );
+		printf("-------------------------------------------------\n" );
+		if(info_test == MPI_INFO_NULL) {
+			ret = FAIL;
+			nerrors++;
+			printf("MPI info object is null. No keys are available.\n");
+		}
+		else {
+			MPI_Info_get_nkeys(info_test, &nkeys_test);
+			//printf("MPI info has %d keys\n", nkeys_test);
+			if (nkeys_test <= 0) {
+				ret = FAIL;
+				nerrors++;
+				printf("MPI info has no keys\n");
+			}
+			else {
+				if ( verbose )
+					printf("MPI info has %d keys\n", nkeys_test);
+				for ( i_test=0; i_test < nkeys_test; i_test++) {
+					MPI_Info_get_nthkey( info_test, i_test, key );
+					MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
+					// Check the cb nodes key
+					if ( strcmp(key,"cb_nodes") == 0 ) {
+						// Check the cb_nodes against a preset value
+						if ( (strcmp(value, "22") == 0) ) {
+							if ( verbose ) {
+								printf("PASSED: CB Nodes Test\n");
+								printf( "Retrieved value for key %s is %s\n", key, value );
+							}
+						}
+						else { // cb nodes retrieved does not match the setting.
+							ret = FAIL;
+							nerrors++;
+							printf("FAILED: CB nodes Test\n");
 							printf( "Retrieved value for key %s is %s\n", key, value );
-							//fflush(stdout);
 						}
 					}
-
-					MPI_Info_free(&info_test);
+					//fflush(stdout);
 				}
+			}
+
+			MPI_Info_free(&info_test);
+			}
+			assert(ret != FAIL);
+			MESG("CB Nodes Test succeeded");
+
 				// end of H5Tuner tests
 				// ------------------------------------------------
 
@@ -1167,10 +1189,10 @@ main(int argc, char **argv)
 finish:
     if (mpi_rank == 0){		/* only process 0 reports */
 	if (nerrors)
-	    printf("***PHDF5 tests detected %d errors***\n", nerrors);
+	    printf("***H5Tuner tests detected %d errors***\n", nerrors);
 	else{
 	    printf("===================================\n");
-	    printf("PHDF5 tests finished with no errors\n");
+	    printf("H5Tuner Independent tests finished with no errors\n");
 	    printf("===================================\n");
 	}
     }
