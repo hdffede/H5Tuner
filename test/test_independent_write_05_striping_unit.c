@@ -297,6 +297,7 @@ phdf5writeInd(char *filename)
 			printf("No H5Tuner currently loaded.\n");
 		}
 		printf("--------------------------------------------------\n");
+
 		// Retrieve MPI parameters set via the H5Tuner
 		MPI_Info_create(&info_test);
 
