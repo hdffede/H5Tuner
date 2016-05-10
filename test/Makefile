@@ -26,12 +26,12 @@ ADD_FLAGS = -DPARALLEL_IO
 
 %.o: %.c $(DEPS)
 	#$(CC) -g -c -o $@ $< $(CFLAGS) $(H5FLAGS) $(ADD_FLAGS)
-	$(CC) -g -o $@ $< -I. -shlib
+	$(CC) -shlib -o $@ $< -I. 
 
 ph5example: ph5example.o
-	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS) --verbose
+	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS) 
 	#rm ph5example.o
-	$(CC) -g -o ph5example ph5example.o -I. -shlib
+	$(CC) -shlib -o ph5example ph5example.o -I.
 
 # H5Tuner independent write tests
 test_independent_write_01: test_independent_write_01_threshold.o
