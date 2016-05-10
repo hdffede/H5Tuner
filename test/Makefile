@@ -33,15 +33,50 @@ ph5example: ph5example.o
 	#rm ph5example.o
 	$(CC) -g -o ph5example ph5example.o -I. -shlib
 
-test_indipendent_write_01: test_indipendent_write_01_threshold.o
-	$(CC) -g -o test_indipendent_write_01_threshold test_indipendent_write_01_threshold.o -I. -shlib
+# H5Tuner independent write tests
+test_independent_write_01: test_independent_write_01_threshold.o
+	$(CC) -g -o test_independent_write_01_threshold test_independent_write_01_threshold.o -I. -shlib
 
-test_indipendent_write_02: test_indipendent_write_02_alignment.o
-	$(CC) -g -o test_indipendent_write_02_alignment test_indipendent_write_02_alignment.o -I. -shlib
+test_independent_write_02: test_independent_write_02_alignment.o
+	$(CC) -g -o test_independent_write_02_alignment test_independent_write_02_alignment.o -I. -shlib
 
-test_indipendent_write_03: test_indipendent_write_03_sieve_buffer_size.o
-	$(CC) -g -o test_indipendent_write_03_sieve_buffer_size test_indipendent_write_03_sieve_buffer_size.o -I. -shlib
+test_independent_write_03: test_independent_write_03_sieve_buffer_size.o
+	$(CC) -g -o test_independent_write_03_sieve_buffer_size test_independent_write_03_sieve_buffer_size.o -I. -shlib
 
+test_independent_write_04: test_independent_write_04_striping_factor.o
+	$(CC) -g -o test_independent_write_04_striping_factor test_independent_write_04_striping_factor.o -I. -shlib
+
+test_independent_write_05: test_independent_write_05_striping_unit.o
+	$(CC) -g -o test_independent_write_05_striping_unit test_independent_write_05_striping_unit.o -I. -shlib
+
+test_independent_write_06: test_independent_write_06_cb_buffer_size.o
+	$(CC) -g -o test_independent_write_06_cb_buffer_size test_independent_write_06_cb_buffer_size.o -I. -shlib
+
+test_independent_write_07: test_independent_write_07_cb_nodes.o
+	$(CC) -g -o test_independent_write_07_cb_nodes test_independent_write_07_cb_nodes.o -I. -shlib
+
+
+# H5Tuner collective write tests
+test_collective_write_01_threshold: test_collective_write_01_threshold.o
+	  $(CC) -g -o test_collective_write_01_threshold test_collective_write_01_threshold.o -I. -shlib
+
+test_collective_write_02: test_collective_write_02_alignment.o
+	  $(CC) -g -o test_collective_write_02_alignment test_collective_write_02_alignment.o -I. -shlib
+
+test_collective_write_03: test_collective_write_03_sieve_buffer_size.o
+	  $(CC) -g -o test_collective_write_03_sieve_buffer_size test_collective_write_03_sieve_buffer_size.o -I. -shlib
+
+test_collective_write_04: test_collective_write_04_striping_factor.o
+		$(CC) -g -o test_collective_write_04_striping_factor test_collective_write_04_striping_factor.o -I. -shlib
+
+test_collective_write_05: test_collective_write_05_striping_unit.o
+		$(CC) -g -o test_collective_write_05_striping_unit test_collective_write_05_striping_unit.o -I. -shlib
+
+test_collective_write_06: test_collective_write_06_cb_buffer_size.o
+		$(CC) -g -o test_collective_write_06_cb_buffer_size test_collective_write_06_cb_buffer_size.o -I. -shlib
+
+test_collective_write_07: test_collective_write_07_cb_nodes.o
+		$(CC) -g -o test_collective_write_07_cb_nodes test_collective_write_07_cb_nodes.o -I. -shlib
 
 ph5example_at: ph5example.o
 	$(CC) -g -o ph5example_at ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS) $(H5ATLIB) -Wl,-wrap,H5Fcreate -Wl,-wrap,H5Fopen --verbose
@@ -50,10 +85,42 @@ ph5example_at: ph5example.o
 clean_ph5example:
 	rm  -f ph5example ph5example_at
 
+cleano:
+	rm *.o
+
+cleanx:
+	rm  -f test_independent_write_01_threshold
+	rm  -f test_independent_write_02_alignment
+	rm  -f test_independent_write_03_sieve_buffer_size
+	rm  -f test_independent_write_04_striping_factor
+	rm  -f test_independent_write_05_striping_unit
+	rm  -f test_independent_write_06_cb_buffer_size
+	rm  -f test_independent_write_07_cb_nodes
+
+	rm  -f test_collective_write_01_threshold
+	rm  -f test_collective_write_02_alignment
+	rm  -f test_collective_write_03_sieve_buffer_size
+	rm  -f test_collective_write_04_striping_factor
+	rm  -f test_collective_write_05_striping_unit
+	rm  -f test_collective_write_06_cb_buffer_size
+	rm  -f test_collective_write_07_cb_nodes
 
 clean:
-	rm  -f test_indipendent_write_01_threshold test_indipendent_write_01_threshold.o
-	rm  -f test_indipendent_write_02_alignment test_indipendent_write_02_alignment.o
-	rm  -f test_indipendent_write_03_sieve_buffer_size test_indipendent_write_03_sieve_buffer_size.o
+	rm  -f test_independent_write_01_threshold test_independent_write_01_threshold.o
+	rm  -f test_independent_write_02_alignment test_independent_write_02_alignment.o
+	rm  -f test_independent_write_03_sieve_buffer_size test_independent_write_03_sieve_buffer_size.o
+	rm  -f test_independent_write_04_striping_factor test_independent_write_04_striping_factor.o
+	rm  -f test_independent_write_05_striping_unit test_independent_write_05_striping_unit.o
+	rm  -f test_independent_write_06_cb_buffer_size test_independent_write_06_cb_buffer_size.o
+	rm  -f test_independent_write_07_cb_nodes test_independent_write_07_cb_nodes.o
+
+	rm  -f test_collective_write_01_threshold test_collective_write_01_threshold.o
+	rm  -f test_collective_write_02_alignment test_collective_write_02_alignment.o
+	rm  -f test_collective_write_03_sieve_buffer_size test_collective_write_03_sieve_buffer_size.o
+	rm  -f test_collective_write_04_striping_factor test_collective_write_04_striping_factor.o
+	rm  -f test_collective_write_05_striping_unit test_collective_write_05_striping_unit.o
+	rm  -f test_collective_write_06_cb_buffer_size test_collective_write_06_cb_buffer_size.o
+	rm  -f test_collective_write_07_cb_nodes test_collective_write_07_cb_nodes.o
+
 	rm  -f ph5example ph5example_at
 	rm  -f ph5example.o ph5example_at.o
