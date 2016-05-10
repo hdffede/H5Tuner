@@ -1195,7 +1195,7 @@ finish:
 	    printf("***H5Tuner tests detected %d errors***\n", nerrors);
 	else{
 	    printf("===================================\n");
-	    printf("H5Tuner Indipendent Write Striping Unit tests finished with no errors\n");
+	    printf("H5Tuner Collective Write Striping Unit tests finished with no errors\n");
 	    printf("===================================\n");
 	}
     }

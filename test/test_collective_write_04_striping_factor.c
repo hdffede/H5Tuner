@@ -544,49 +544,6 @@ else {
 }
 printf("--------------------------------------------------\n");
 
-
-// Retrieve HDF5 Threshold and Alignment
-hsize_t alignment[2];
-size_t sieve_buf_size;
-alignment[0]= 0; // threshold value
-alignment[1]= 0; // alignment value
-int ierr = H5Pget_alignment(acc_tpl1, &alignment[0], &alignment[1]);
-printf("\n\n--------------------------------------------------\n");
-printf("Testing values for Threshold and Alignment\n");
-printf("--------------------------------------------------\n");
-printf("Test value set to:88 \nRetrieved Threshold=%lu\n", alignment[0]);
-printf("Test value set to:44 \nRetrieved Alignment=%lu\n", alignment[1]);
-// Check Threshold
-if ( alignment[0] == 88 ) {
-	printf("PASSED: Threshold Test\n");
-}
-else {
-	printf("FAILED: Threshold Test\n");
-}
-// Check Alignment
-if ( alignment[1] == 44 ) {
-	printf("PASSED: Alignment Test\n");
-}
-else {
-	printf("FAILED: Alignment Test\n");
-}
-printf("--------------------------------------------------\n\n");
-
-// Retrieve HDF5 sieve buffer size
-ierr = H5Pget_sieve_buf_size(acc_tpl1, &sieve_buf_size);
-printf("\n\n--------------------------------------------------\n");
-printf("Testing values for Sieve Buffer Size\n");
-printf("--------------------------------------------------\n");
-printf("Test value set to:77 \nRetrieved Sieve Buffer Size=%lu\n", sieve_buf_size);
-// Check sieve buffer size
-if ( (int) sieve_buf_size == 77 ) {
-	printf("PASSED: Sieve Buffer Size Test\n");
-}
-else {
-	printf("FAILED: Sieve Buffer Size Test\n");
-}
-printf("--------------------------------------------------\n\n");
-
 // Retrieve MPI parameters set via the H5Tuner
 MPI_Info_create(&info_test);
 
@@ -594,31 +551,54 @@ ret = H5Pget_fapl_mpio(acc_tpl1, &comm_test, &info_test);
 assert(ret != FAIL);
 MESG("H5Pget_fapl_mpio succeed");
 
-
 printf("-------------------------------------------------\n" );
 printf("Testing parameters values via MPI_Info\n" );
 printf("-------------------------------------------------\n" );
 if(info_test == MPI_INFO_NULL) {
-				printf("MPI info object is null. No keys are available.\n");
+	ret = FAIL;
+	nerrors++;
+	printf("MPI info object is null. No keys are available.\n");
 }
 else {
 	MPI_Info_get_nkeys(info_test, &nkeys_test);
 	//printf("MPI info has %d keys\n", nkeys_test);
 	if (nkeys_test <= 0) {
+		ret = FAIL;
+		nerrors++;
 		printf("MPI info has no keys\n");
 	}
 	else {
-		printf("MPI info has %d keys\n", nkeys_test);
+		if ( verbose )
+			printf("MPI info has %d keys\n", nkeys_test);
 		for ( i_test=0; i_test < nkeys_test; i_test++) {
 			MPI_Info_get_nthkey( info_test, i_test, key );
 			MPI_Info_get( info_test, key, MPI_MAX_INFO_VAL, value, &flag_test );
-			printf( "Retrieved value for key %s is %s\n", key, value );
+			// Check the Striping Factor key
+			if ( strcmp(key,"striping_factor") == 0 ) {
+				// Check the striping factor against a preset value
+				if ( (strcmp(value, "11") == 0) || (strcmp(value, "7") == 0) || (strcmp(value, "1")==0) ) {
+					if ( verbose ) {
+						printf("PASSED: Striping Factor Test\n");
+						printf( "Retrieved value for key %s is %s\n", key, value );
+					}
+				}
+				else { // striping factor retrieved does not match the setting.
+					ret = FAIL;
+					nerrors++;
+					printf("FAILED: Striping Factor Test\n");
+					printf( "Retrieved value for key %s is %s\n", key, value );
+				}
+			}
 			//fflush(stdout);
 		}
 	}
-	printf("-------------------------------------------------\n" );
+
 	MPI_Info_free(&info_test);
-}
+	}
+	assert(ret != FAIL);
+	MESG("Striping Factor Test succeeded");
+
+
 // end of H5Tuner tests
 // ---------------------------------------
 
@@ -1208,10 +1188,10 @@ main(int argc, char **argv)
 finish:
     if (mpi_rank == 0){		/* only process 0 reports */
 	if (nerrors)
-	    printf("***PHDF5 tests detected %d errors***\n", nerrors);
+	    printf("***H5Tuner tests detected %d errors***\n", nerrors);
 	else{
 	    printf("===================================\n");
-	    printf("PHDF5 tests finished with no errors\n");
+	    printf("H5Tuner Collective Write Striping Factor tests finished with no errors\n");
 	    printf("===================================\n");
 	}
     }
