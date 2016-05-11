@@ -46,6 +46,11 @@ AM_SILENT_RULES([yes])
 ## --disable-maintainer-mode to prevent running the autotools.
 AM_MAINTAINER_MODE([enable])
 
+## ----------------------------------------------------------------------
+## Set prefix default (install directory) to a directory in the build area.
+## This allows multiple src-dir builds within one host.
+AC_PREFIX_DEFAULT([`pwd`/h5tuner])
+
 AC_PROG_CC
 
 ## H5_CFLAGS (and company) are used by HDF5 for flags not exported to h5cc.
@@ -65,6 +70,7 @@ AC_SUBST([AM_ADDFLAGS_SHARED])
 AC_SUBST([AM_LIBS])
 AC_SUBST([AM_MXML_LIB])
 AC_SUBST([AM_HDF5_LIB])
+AC_SUBST([AM_MPI_LIB])
 
 ## Make sure flags are initialized.
 AM_CFLAGS="${AM_CFLAGS}"
@@ -109,6 +115,7 @@ AM_LDFLAGS_SHARED=-ldl
 
 AM_MXML_LIB="-L${MXMLROOT}/lib/ -lmxml"
 AM_HDF5_LIB="-L${HDF5ROOT}/lib -lhdf5"
+AM_MPI_LIB="-L${MPIROOT}/lib -lmpich"
 
 AM_ADDFLAGS=-DDEBUG
 AM_ADDFLAGS_SHARED=-DDEBUG
@@ -535,6 +542,7 @@ CPPFLAGS="$saved_user_CPPFLAGS"
 LDFLAGS="$saved_user_LDFLAGS"
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+                 test/Makefile])
 
 AC_OUTPUT
