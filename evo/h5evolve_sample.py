@@ -243,7 +243,7 @@ def eval_func(genome):
            #q = subprocess.Popen(["ibrun $WORK/HDF/GCRM/gcrmio/gcrmio -r 11 -s 7 -prs -t 10 -o '/scratch/01657/bbehza2'", "-np", "128"], stdout=subprocess.PIPE, shell=True)
            #q = subprocess.Popen(["ibrun $WORK/HDF/GCRM/gcrmio/gcrmio -r 11 -s 7 -prs -t 40 -o '/scratch/01657/bbehza2'", "-np", "512"], stdout=subprocess.PIPE, shell=True)
 
-           q = subprocess.Popen(["$SCRATCH/h5_write", "rm SDS.h5"], stdout=subprocess.PIPE, shell=True)
+           q = subprocess.Popen(["mpiexec ", "-n 2", "$SCRATCH/ph5example"], stdout=subprocess.PIPE, shell=True)
            out, err = q.communicate()
            print out
 
