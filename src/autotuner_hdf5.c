@@ -189,7 +189,8 @@ FORWARD_DECL(H5Dcreate2, hid_t, (hid_t loc_id, const char *name, hid_t dtype_id,
 
 hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t fapl_id)
 {
-	herr_t ret = -1;
+	hid_t ret_value = -1;
+  herr_t ret = -1;
 	FILE *fp;
 	mxml_node_t *tree;
 
@@ -219,7 +220,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	}
 	else {
 		fprintf(stderr, "H5Tuner Library supports mpio drivers only(). Returning...\n");
-		return ret;
+		return ret_value;
 	}
 
 	if(ret < 0) {
@@ -228,8 +229,8 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	  	printf("H5Tuner: calling H5Fcreate.\n");
 		#endif
 
-		ret = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
-		return ret;
+		ret_value = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
+		return ret_value;
 	}
 
 	if(orig_info == MPI_INFO_NULL) {
@@ -274,12 +275,12 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	}
 	else {
 		fprintf(stderr, "H5Tuner Library supports mpio drivers only(). Returning...\n");
-		return ret;
+		return ret_value;
 	}
 
 	if(ret < 0) {
 		fprintf(stderr, "Error in calling H5Pset_fapl_mpio(). Returning...\n");
-		return ret;
+		return ret_value;
 	}
 
 	fclose(fp);
@@ -287,9 +288,9 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	#ifdef DEBUG
 	  printf("\nH5Tuner: calling H5Fcreate.\n");
 	#endif
-	ret = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
+	ret_value = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
 
-	return ret;
+	return ret_value;
 }
 
 herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id, hid_t xfer_plist_id, const void * buf) {
