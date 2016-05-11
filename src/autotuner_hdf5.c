@@ -316,6 +316,7 @@ herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, h
 
 hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t space_id, hid_t dcpl_id) {
     herr_t ret = -1;
+    hid_t ret_value = -1;
     FILE *fp;
     mxml_node_t *tree;
 
@@ -376,16 +377,16 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
   	#endif
 
     if (chunked_pid == -1) {
-	     ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
+	     ret_value = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
     }
     else if(dcpl_id == 0) {
-	     ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
+	     ret_value = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
     }
     else {
       printf("H5Tuner: Cannot set chunked property list since dcpl_id is not 0.\n");
-       ret = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, chunked_pid, dapl_id);
+       ret_value = __fake_H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, chunked_pid, dapl_id);
     }
 
-    return ret;
+    return ret_value;
 
 }
