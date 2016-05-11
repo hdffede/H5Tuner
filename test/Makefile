@@ -26,57 +26,57 @@ ADD_FLAGS = -DPARALLEL_IO
 
 %.o: %.c $(DEPS)
 	#$(CC) -g -c -o $@ $< $(CFLAGS) $(H5FLAGS) $(ADD_FLAGS)
-	$(CC) -shlib -o $@ $< -I. 
+	$(CC) -shlib -o $@ $< -I.
 
 ph5example: ph5example.o
-	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS) 
+	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS)
 	#rm ph5example.o
 	$(CC) -shlib -o ph5example ph5example.o -I.
 
 # H5Tuner independent write tests
 test_independent_write_01: test_independent_write_01_threshold.o
-	$(CC) -g -o test_independent_write_01_threshold test_independent_write_01_threshold.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_01_threshold test_independent_write_01_threshold.o -I.
 
 test_independent_write_02: test_independent_write_02_alignment.o
-	$(CC) -g -o test_independent_write_02_alignment test_independent_write_02_alignment.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_02_alignment test_independent_write_02_alignment.o -I.
 
 test_independent_write_03: test_independent_write_03_sieve_buffer_size.o
-	$(CC) -g -o test_independent_write_03_sieve_buffer_size test_independent_write_03_sieve_buffer_size.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_03_sieve_buffer_size test_independent_write_03_sieve_buffer_size.o -I.
 
 test_independent_write_04: test_independent_write_04_striping_factor.o
-	$(CC) -g -o test_independent_write_04_striping_factor test_independent_write_04_striping_factor.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_04_striping_factor test_independent_write_04_striping_factor.o -I.
 
 test_independent_write_05: test_independent_write_05_striping_unit.o
-	$(CC) -g -o test_independent_write_05_striping_unit test_independent_write_05_striping_unit.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_05_striping_unit test_independent_write_05_striping_unit.o -I.
 
 test_independent_write_06: test_independent_write_06_cb_buffer_size.o
-	$(CC) -g -o test_independent_write_06_cb_buffer_size test_independent_write_06_cb_buffer_size.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_06_cb_buffer_size test_independent_write_06_cb_buffer_size.o -I.
 
 test_independent_write_07: test_independent_write_07_cb_nodes.o
-	$(CC) -g -o test_independent_write_07_cb_nodes test_independent_write_07_cb_nodes.o -I. -shlib
+	$(CC) -shlib -o test_independent_write_07_cb_nodes test_independent_write_07_cb_nodes.o -I.
 
 
 # H5Tuner collective write tests
 test_collective_write_01_threshold: test_collective_write_01_threshold.o
-	  $(CC) -g -o test_collective_write_01_threshold test_collective_write_01_threshold.o -I. -shlib
+	  $(CC) -shlib -o test_collective_write_01_threshold test_collective_write_01_threshold.o -I.
 
 test_collective_write_02: test_collective_write_02_alignment.o
-	  $(CC) -g -o test_collective_write_02_alignment test_collective_write_02_alignment.o -I. -shlib
+	  $(CC) -shlib -o test_collective_write_02_alignment test_collective_write_02_alignment.o -I.
 
 test_collective_write_03: test_collective_write_03_sieve_buffer_size.o
-	  $(CC) -g -o test_collective_write_03_sieve_buffer_size test_collective_write_03_sieve_buffer_size.o -I. -shlib
+	  $(CC) -shlib -o test_collective_write_03_sieve_buffer_size test_collective_write_03_sieve_buffer_size.o -I.
 
 test_collective_write_04: test_collective_write_04_striping_factor.o
-		$(CC) -g -o test_collective_write_04_striping_factor test_collective_write_04_striping_factor.o -I. -shlib
+		$(CC) -shlib -o test_collective_write_04_striping_factor test_collective_write_04_striping_factor.o -I.
 
 test_collective_write_05: test_collective_write_05_striping_unit.o
-		$(CC) -g -o test_collective_write_05_striping_unit test_collective_write_05_striping_unit.o -I. -shlib
+		$(CC) -shlib -o test_collective_write_05_striping_unit test_collective_write_05_striping_unit.o -I.
 
 test_collective_write_06: test_collective_write_06_cb_buffer_size.o
-		$(CC) -g -o test_collective_write_06_cb_buffer_size test_collective_write_06_cb_buffer_size.o -I. -shlib
+		$(CC) -shlib -o test_collective_write_06_cb_buffer_size test_collective_write_06_cb_buffer_size.o -I.
 
 test_collective_write_07: test_collective_write_07_cb_nodes.o
-		$(CC) -g -o test_collective_write_07_cb_nodes test_collective_write_07_cb_nodes.o -I. -shlib
+		$(CC) -shlib -o test_collective_write_07_cb_nodes test_collective_write_07_cb_nodes.o -I.
 
 ph5example_at: ph5example.o
 	$(CC) -g -o ph5example_at ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS) $(H5ATLIB) -Wl,-wrap,H5Fcreate -Wl,-wrap,H5Fopen --verbose
