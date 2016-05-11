@@ -914,7 +914,7 @@ test_split_comm_access(char filenames[][PATH_MAX])
 	fid=H5Fcreate(filenames[color],H5F_ACC_TRUNC,H5P_DEFAULT,acc_tpl);
 	assert(fid != FAIL);
 	MESG("H5Fcreate succeed");
-
+	
 	/* Release file-access template */
 	ret=H5Pclose(acc_tpl);
 	assert(ret != FAIL);
