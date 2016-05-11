@@ -1166,23 +1166,19 @@ main(int argc, char **argv)
     }
 
     if (dowrite){
-	MPI_BANNER("testing PHDF5 dataset using split communicators...");
-	test_split_comm_access(testfiles);
-	//MPI_BANNER("testing PHDF5 dataset independent write...");
-	//phdf5writeInd(testfiles[0]);
-	MPI_BANNER("testing PHDF5 dataset collective write...");
-	phdf5writeAll(testfiles[1]);
+	    MPI_BANNER("testing PHDF5 dataset using split communicators...");
+	    test_split_comm_access(testfiles);
+	    MPI_BANNER("testing PHDF5 dataset collective write...");
+    	phdf5writeAll(testfiles[1]);
     }
     if (doread){
-	//MPI_BANNER("testing PHDF5 dataset independent read...");
-	//phdf5readInd(testfiles[0]);
-	MPI_BANNER("testing PHDF5 dataset collective read...");
-	phdf5readAll(testfiles[1]);
+    	MPI_BANNER("testing PHDF5 dataset collective read...");
+    	phdf5readAll(testfiles[1]);
     }
 
     if (!(dowrite || doread)){
-	usage();
-	nerrors++;
+	    usage();
+	    nerrors++;
     }
 
 finish:

@@ -971,7 +971,7 @@ test_split_comm_access(char filenames[][PATH_MAX])
     herr_t ret;			/* generic return value */
 
     if (verbose)
-	printf("Independent write test on file %s %s\n",
+	    printf("Independent write test on file %s %s\n",
 	    filenames[0], filenames[1]);
 
     color = mpi_rank%2;
@@ -1007,8 +1007,8 @@ test_split_comm_access(char filenames[][PATH_MAX])
 	assert(ret != FAIL);
     }
     if (mpi_rank == 0){
-	mrc = MPI_File_delete(filenames[color], info);
-	assert(mrc==MPI_SUCCESS);
+	    mrc = MPI_File_delete(filenames[color], info);
+	    assert(mrc==MPI_SUCCESS);
     }
 }
 
@@ -1151,14 +1151,14 @@ main(int argc, char **argv)
     MPI_Get_processor_name(mpi_name,&mpi_namelen);
     /* Make sure datasets can be divided into equal chunks by the processes */
     if ((SPACE1_DIM1 % mpi_size) || (SPACE1_DIM2 % mpi_size)){
-	printf("DIM1(%d) and DIM2(%d) must be multiples of processes (%d)\n",
+	    printf("DIM1(%d) and DIM2(%d) must be multiples of processes (%d)\n",
 	    SPACE1_DIM1, SPACE1_DIM2, mpi_size);
-	nerrors++;
-	goto finish;
+	    nerrors++;
+	    goto finish;
     }
 
     if (parse_options(argc, argv) != 0)
-	goto finish;
+	    goto finish;
 
     /* show test file names */
     if (mpi_rank == 0){
@@ -1170,37 +1170,33 @@ main(int argc, char **argv)
     }
 
     if (dowrite){
-	MPI_BANNER("testing PHDF5 dataset using split communicators...");
-	test_split_comm_access(testfiles);
-	//MPI_BANNER("testing PHDF5 dataset independent write...");
-	//phdf5writeInd(testfiles[0]);
-	MPI_BANNER("testing PHDF5 dataset collective write...");
-	phdf5writeAll(testfiles[1]);
+	    MPI_BANNER("testing PHDF5 dataset using split communicators...");
+	    test_split_comm_access(testfiles);
+	    MPI_BANNER("testing PHDF5 dataset collective write...");
+	    phdf5writeAll(testfiles[1]);
     }
     if (doread){
-	//MPI_BANNER("testing PHDF5 dataset independent read...");
-	//phdf5readInd(testfiles[0]);
-	MPI_BANNER("testing PHDF5 dataset collective read...");
-	phdf5readAll(testfiles[1]);
+	    MPI_BANNER("testing PHDF5 dataset collective read...");
+	    phdf5readAll(testfiles[1]);
     }
 
     if (!(dowrite || doread)){
-	usage();
-	nerrors++;
+	    usage();
+	    nerrors++;
     }
 
 finish:
     if (mpi_rank == 0){		/* only process 0 reports */
-	if (nerrors)
-	    printf("***H5Tuner tests detected %d errors***\n", nerrors);
-	else{
-	    printf("===================================\n");
-	    printf("H5Tuner Collective Write Striping Unit tests finished with no errors\n");
-	    printf("===================================\n");
-	}
+	    if (nerrors)
+	      printf("***H5Tuner tests detected %d errors***\n", nerrors);
+	    else{
+	      printf("===================================\n");
+	      printf("H5Tuner Collective Write Striping Unit tests finished with no errors\n");
+	      printf("===================================\n");
+	    }
     }
     if (docleanup)
-	cleanup();
+	    cleanup();
     MPI_Finalize();
 
     return(nerrors);
