@@ -543,6 +543,12 @@ LDFLAGS="$saved_user_LDFLAGS"
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 test/Makefile])
+                 test/Makefile
+                 examples/Makefile
+                 lib/Makefile
+                 lib/.gitkeep
+                 examples/config.xml
+                 test/config.xml
+                 evo/h5evolve_sample.py])
 
 AC_OUTPUT
