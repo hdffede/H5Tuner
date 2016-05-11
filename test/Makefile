@@ -26,7 +26,7 @@ ADD_FLAGS = -DPARALLEL_IO
 
 %.o: %.c $(DEPS)
 	#$(CC) -g -c -o $@ $< $(CFLAGS) $(H5FLAGS) $(ADD_FLAGS)
-	$(CC) -shlib -o $@ $< -I.
+	$(CC) -shlib -c -o $@ $< -I.
 
 ph5example: ph5example.o
 	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS)
