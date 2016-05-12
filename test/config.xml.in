@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Parameters>
+	<High_Level_IO_Library>
+		<sieve_buf_size>77</sieve_buf_size>
+		<alignment>88,44</alignment>
+		<!-- H5Pset_alignment function gets 2 args: (Threshold, Alignment) -->
+	</High_Level_IO_Library>
+
+	<Middleware_Layer>
+		<cb_buffer_size>631136</cb_buffer_size>
+		<cb_nodes>22</cb_nodes>
+	</Middleware_Layer>
+
+	<Parallel_File_System>
+		<striping_factor>11</striping_factor>
+		<striping_factor FileName="ParaEg0.h5">7</striping_factor>
+		<striping_factor FileName="ParaEg1.h5">1</striping_factor>
+		<striping_unit>6556</striping_unit>
+	</Parallel_File_System>
+</Parameters>

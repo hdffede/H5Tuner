@@ -116,7 +116,7 @@ then
             CC=mpicc \
             CPPFLAGS=-I${AT_PREFIX}/opt/${HDF5_V}/include \
             LDFLAGS=-L${AT_PREFIX}/opt/${HDF5_V}/lib \
-            ./configure --enable-parallel-tests --disable-shared \
+            ./configure --enable-parallel-tests \
             --prefix=${AT_PREFIX}/opt/${NCDF4DIR}
             make && make install
         cd ..

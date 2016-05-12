@@ -1,13 +1,14 @@
 CC = h5pcc
 #CC = mpicc
 
-#AT_DIR is the path to H5Tuner direcorty (setup with env variable)
-MXMLROOT=${AT_DIR}/opt/mxml-2.9
-HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.12
-MPIROOT=/opt/mpich2
-H5PROOT=${AT_DIR}/opt/h5part-1.6.6
-ZROOT=${AT_DIR}/opt/zlib-1.2.8
-H5TUNEROOT=${AT_DIR}
+#AT_DIR is the path to H5Tuner directory
+# setup ROOTs with env variables for example
+#MXMLROOT=${AT_DIR}/opt/mxml-2.9
+#HDF5ROOT=${AT_DIR}/opt/hdf5-1.8.16
+#MPIROOT=/opt/mpich2
+#H5PROOT=${AT_DIR}/opt/h5part-1.6.6
+#ZROOT=${AT_DIR}/opt/zlib-1.2.8
+#H5TUNEROOT=${AT_DIR}
 
 CFLAGS = -DUSE_V4_SSE -DOMPI_SKIP_MPICXX
 H5PFLAGS = -I${MPIROOT}/include -I${HDF5ROOT}/include -I${H5PROOT}/include
@@ -33,7 +34,7 @@ vpicio_uni: vpicio_uni.o
 ph5example: ph5example.o
 	#$(CC) $(CFLAGS) -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(ADD_FLAGS) --verbose
 	#rm ph5example.o
-	$(CC) -g -o ph5example ph5example.o -I. $(LIB) $(H5LIB) $(ZLIB) $(MPILIB) $(MXMLLIB) -shlib
+	$(CC) -g -o ph5example ph5example.o -I. -shlib
 
 AT: vpicio_uni.o
 	$(CC) -o vpicio_uni_at vpicio_uni.o -I. $(LIB) $(H5PLIB) $(ZLIB) $(MPILIB) $(MXMLLIB) $(ADD_FLAGS) $(H5ATLIB) -Wl,-wrap,H5Fcreate -Wl,-wrap,H5Fopen
@@ -51,6 +52,5 @@ clean_vpic:
 
 clean:
 	rm  -f vpicio_uni vpicio_uni_at
-	rm  -f ph5example ph5example_at
 	rm  -f ph5example ph5example_at
 	rm  -f ph5example.o ph5example_at.o
