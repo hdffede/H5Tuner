@@ -26,8 +26,6 @@ AC_CONFIG_HEADERS([src/autotuner.h])
 
 AC_CONFIG_MACRO_DIR([m4])
 
-LT_INIT([dlopen])
-
 ## AM_INIT_AUTOMAKE takes a list of options that should be applied to
 ## every Makefile.am when automake is run.
 AM_INIT_AUTOMAKE
@@ -313,6 +311,37 @@ CFLAGS="$H5_CFLAGS $AM_CFLAGS $CFLAGS"
 ## Checkpoint the cache
 AC_CACHE_SAVE
 
+##    RUNSERIAL            -- This is a command which will be prepended to
+##               the executable name to run the executable using
+##               a single process. For serial versions of the
+##               library this will normally be empty. For parallel
+##               versions it might be something like `mpiexec -n 1'.
+##               The value of this variable is substituted in *.in
+##               files.
+##
+##    RUNPARALLEL    -- This is a command which will be prepended to
+##               the executable name to run the executable on
+##               multiple processors. For the serial library the
+##               value will normally be the empty string. For
+##               parallel library it should be something like
+##               "mpiexec -n \$\${NPROCS:=6}" where NPROCS will
+##               eventually contain the number of processors on which
+##               to run the executable (the double dollarsigns are to
+##               protect the expansion until make executes the
+##               command).  The value of this variable is
+##               substituted in *.in files.
+##
+AC_SUBST([RUNSERIAL])
+AC_SUBST([RUNPARALLEL])
+
+## ----------------------------------------------------------------------
+## Create libtool.  If shared/static libraries are going to be enabled
+## or disabled, it should happen before these macros.
+    LT_PREREQ([2.2])
+
+LT_INIT([dlopen])
+
+
 ## ----------------------------------------------------------------------
 ## Check if the compiler should include symbols
 ##
@@ -533,6 +562,33 @@ esac
 
 ## Checkpoint the cache
 AC_CACHE_SAVE
+
+## Set RUNPARALLEL to mpiexec. 
+if test -z "$RUNPARALLEL"; then
+  RUNPARALLEL="mpiexec -n \$\${NPROCS:=3}"
+fi
+
+## Display what we found about running programs
+AC_MSG_CHECKING([prefix for running on one processor])
+AC_MSG_RESULT([$RUNSERIAL])
+AC_MSG_CHECKING([prefix for running in parallel])
+AC_MSG_RESULT([$RUNPARALLEL])
+
+## There *must* be some way to run in parallel even if it's just the
+## word `none'.
+if test -z "$RUNPARALLEL"; then
+  AC_MSG_ERROR([no way to run a parallel program])
+fi
+
+## If RUNSERIAL or RUNPARALLEL is the word `none' then replace it with
+## the empty string. This means that no launch commands were requested,
+## so we will not use any launch commands.
+if test "X$RUNSERIAL" = "Xnone"; then
+  RUNSERIAL=""
+fi
+if test "X$RUNPARALLEL" = "Xnone"; then
+  RUNPARALLEL=""
+fi
 
 
 ## ----------------------------------------------------------------------

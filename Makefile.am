@@ -8,6 +8,7 @@
 # Setting CC to /<path>/h5pcc may or may not cover HDF5ROOT and MPIROOT
 # If CC is not set, will there be files in config to set a default compiler?
 
+RUNEXEC=$(RUNPARALLEL)
 
 # tells Autoconf to look for additional Autoconf macros in the m4 subdirectory
 ACLOCAL_AMFLAGS=-I m4

@@ -5,6 +5,8 @@
 #
 #
 
+RUNEXEC=$(RUNPARALLEL)
+
 TEST_PROG=ph5example
 
 

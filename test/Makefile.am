@@ -5,6 +5,8 @@
 #
 #
 
+RUNEXEC=$(RUNPARALLEL)
+
 TEST_PROG=test_collective_write_01_threshold \
 	  test_collective_write_02_alignment \
 	  test_collective_write_03_sieve_buffer_size \
