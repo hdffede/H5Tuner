@@ -1,9 +1,9 @@
 ## Process this file with autoconf to produce a configure script.
 ##
 ## This file is part of h5tuner. The full h5tuner copyright notice,
-##  including terms governing use, modification, and redistribution, is 
-## contained in the file COPYING, which can be found at the root of the 
-## source code distribution tree.  If you do not have access to this file, 
+##  including terms governing use, modification, and redistribution, is
+## contained in the file COPYING, which can be found at the root of the
+## source code distribution tree.  If you do not have access to this file,
 ## you may request a copy from help@hdfgroup.org.
 ##
 ##
@@ -106,7 +106,7 @@ AC_MSG_CHECKING([shell variables initial values])
 set >&AS_MESSAGE_LOG_FD
 AC_MSG_RESULT([done])
 
-## set some flag values.  These may be moved to platform specific config 
+## set some flag values.  These may be moved to platform specific config
 ## files later.
 AM_CFLAGS="-I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include"
 AM_CFLAGS_SHARED="-I . -I${MPIROOT}/include -I${MXMLROOT}/include -I${HDF5ROOT}/include -g -shared -fpic -DPIC"
@@ -546,7 +546,6 @@ AC_CONFIG_FILES([Makefile
                  test/Makefile
                  examples/Makefile
                  lib/Makefile
-                 lib/.gitkeep
                  examples/config.xml
                  test/config.xml
                  evo/h5evolve_sample.py])
