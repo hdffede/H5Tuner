@@ -88,14 +88,14 @@ void set_mpi_parameter(mxml_node_t *tree, char *parameter_name, const char *file
 		// TODO: Change this strstr() function call with a use of basename!
 		if(node_file_name == NULL)  {
 			#ifdef DEBUG
-			printf("H5Tuner: Execution wide setting %s: %s\n", parameter_name, node->child->value.text.string);
+			//printf("H5Tuner: Execution wide setting %s: %s\n", parameter_name, node->child->value.text.string);
 			#endif
 			MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
 		}
 		else {
       if( strstr(filename, node_file_name) != NULL )  {
         #ifdef DEBUG
-        printf("H5Tuner: %s setting %s: %s\n\n\n",node_file_name, parameter_name, node->child->value.text.string);
+        //printf("H5Tuner: %s setting %s: %s\n\n\n",node_file_name, parameter_name, node->child->value.text.string);
         #endif
         MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
       }
@@ -118,7 +118,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 		// TODO: Change this strstr() function call with a use of basename!
 		if((node_file_name == NULL) || (strstr(filename, node_file_name) != NULL))  {
 				#ifdef DEBUG
-				  printf("H5Tuner: setting %s: %s\n", parameter_name, node->child->value.text.string);
+				  //printf("H5Tuner: setting %s: %s\n", parameter_name, node->child->value.text.string);
 				#endif
 			if(strcmp(parameter_name, "sieve_buf_size") == 0) {
 				int ierr = H5Pset_sieve_buf_size(fapl_id, atoi(node->child->value.text.string));
@@ -127,7 +127,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 				char *threshold = strtok(node->child->value.text.string, ",");
 				char *alignment = strtok(NULL, ",");
 				#ifdef DEBUG
-				  printf("H5Tuner: setting Threshold=%s; Alignment=%s\n", threshold, alignment);
+				  //printf("H5Tuner: setting Threshold=%s; Alignment=%s\n", threshold, alignment);
 				#endif
 
 				int ierr = H5Pset_alignment(fapl_id, atoi(threshold), atoi(alignment));
@@ -135,7 +135,7 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 			else if(strcmp(parameter_name, "chunk") == 0) {
 				const char* variable_name = mxmlElementGetAttr(node, "VariableName");
 				#ifdef DEBUG
-				  printf("H5Tuner: VariableName: %s\n", variable_name);
+				  //printf("H5Tuner: VariableName: %s\n", variable_name);
 				#endif
 
 				if(variable_name == NULL || (variable_name != NULL && strcmp(variable_name, filename) == 0)) {
@@ -145,9 +145,9 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 				    H5Sget_simple_extent_dims(fapl_id, dims, NULL);
 
 				    #ifdef DEBUG
-				      printf("dims[0] = %d, ndims = %d\n", dims[0], ndims);
-				      printf("dims[1] = %d, ndims = %d\n", dims[1], ndims);
-				      printf("dims[2] = %d, ndims = %d\n", dims[2], ndims);
+				      //printf("dims[0] = %d, ndims = %d\n", dims[0], ndims);
+				      //printf("dims[1] = %d, ndims = %d\n", dims[1], ndims);
+				      //printf("dims[2] = %d, ndims = %d\n", dims[2], ndims);
 				    #endif
 
 				    hsize_t *chunk_arr = (hsize_t *) malloc(sizeof(hsize_t) * ndims);
@@ -156,14 +156,14 @@ hid_t set_hdf5_parameter(mxml_node_t *tree, char *parameter_name, const char *fi
 				    if(chunk_arr[0] > dims[0])
 					    return 0;
 				    #ifdef DEBUG
-				      printf("H5Tuner: Setting chunk[0] for %s -> %d\n", filename, chunk_arr[0]);
+				      //printf("H5Tuner: Setting chunk[0] for %s -> %d\n", filename, chunk_arr[0]);
 				    #endif
 				    for(i = 1; i < ndims; i++) {
 					    chunk_arr[i] = atoi(strtok(NULL, ","));
 				    	if(chunk_arr[i] > dims[i])
 					      return 0;
 				    	#ifdef DEBUG
-				    	  printf("H5Tuner: Setting chunk[%d] for %s -> %d\n", i, filename, chunk_arr[i]);
+				    	  //printf("H5Tuner: Setting chunk[%d] for %s -> %d\n", i, filename, chunk_arr[i]);
 				    	#endif
 				    }
 
@@ -201,7 +201,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
   // char *config_file = getenv("AT_CONFIG_FILE");
   // char *file_path = config_file ;
   #ifdef DEBUG
-	  printf("\nH5Tuner: Loading parameters file: %s\n", file_path);
+	  //printf("\nH5Tuner: Loading parameters file: %s\n", file_path);
   #endif
 
 	fp = fopen(file_path, "r");
@@ -214,7 +214,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	if(driver == H5FD_MPIO) {
     #ifdef DEBUG
-		  printf("Driver is H5FD_MPIO\n");
+		  //printf("Driver is H5FD_MPIO\n");
 		#endif
 		ret = H5Pget_fapl_mpio(fapl_id, &orig_comm, &orig_info);
 	}
@@ -226,7 +226,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	if(ret < 0) {
 		fprintf(stderr, "Error in calling H5Pget_fapl(). Returning...\n");
 		#ifdef DEBUG
-	  	printf("H5Tuner: calling H5Fcreate.\n");
+	  	//printf("H5Tuner: calling H5Fcreate.\n");
 		#endif
 
 		ret_value = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
@@ -235,20 +235,20 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	if(orig_info == MPI_INFO_NULL) {
 		#ifdef DEBUG
-		  printf("H5Tuner: found no MPI_Info object and is creating a new one.\n");
+		  //printf("H5Tuner: found no MPI_Info object and is creating a new one.\n");
 		#endif
 		MPI_Info_create(&orig_info);
 	}
 	else {
 		#ifdef DEBUG
-		  printf("H5Tuner: MPI_Info object is not null. Continuing.\n");
+		  //printf("H5Tuner: MPI_Info object is not null. Continuing.\n");
 		#endif
 	}
 
 	#ifdef DEBUG
 	  int nkeys = -1;
 	  MPI_Info_get_nkeys(orig_info, &nkeys);
-	  printf("H5Tuner: MPI_Info object has %d keys\n", nkeys);
+	  //printf("H5Tuner: MPI_Info object has %d keys\n", nkeys);
 	#endif
 
 	set_gpfs_parameter(tree, "IBM_lockless_io", filename);
@@ -266,7 +266,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 	#ifdef DEBUG
 	  MPI_Info_get_nkeys(orig_info, &nkeys);
-	  printf("H5Tuner: completed parameters setting \n");
+	  //printf("H5Tuner: completed parameters setting \n");
     //printf("H5Tuner created MPI_Info object has %d keys!\n", nkeys);
 	#endif
 
@@ -286,7 +286,7 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	fclose(fp);
 
 	#ifdef DEBUG
-	  printf("\nH5Tuner: calling H5Fcreate.\n");
+	  //printf("\nH5Tuner: calling H5Fcreate.\n");
 	#endif
 	ret_value = __fake_H5Fcreate(filename, flags, fcpl_id, fapl_id);
 
@@ -307,7 +307,7 @@ herr_t DECL(H5Dwrite)(hid_t dataset_id, hid_t mem_type_id, hid_t mem_space_id, h
 	#endif
 
 	#ifdef DEBUG
-	  printf("\nH5Tuner: calling H5Dwrite.\n");
+	  //printf("\nH5Tuner: calling H5Dwrite.\n");
 	#endif
 	ret = __fake_H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
 
@@ -326,7 +326,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
     strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
-      printf("\nH5Tuner: Loading parameters file for H5Dcreate1: %s\n", file_path);
+      //printf("\nH5Tuner: Loading parameters file for H5Dcreate1: %s\n", file_path);
     #endif
 
     fp = fopen(file_path, "r");
@@ -335,7 +335,7 @@ hid_t DECL(H5Dcreate1)(hid_t loc_id, const char *name, hid_t type_id, hid_t spac
     hid_t chunked_pid = set_hdf5_parameter(tree, "chunk", name, space_id);
 
     #ifdef DEBUG
-  	  printf("\nH5Tuner: calling H5Dcreate1.\n");
+  	  //printf("\nH5Tuner: calling H5Dcreate1.\n");
   	#endif
 
     if (chunked_pid == -1) {
@@ -364,7 +364,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     strcpy(file_path, "config.xml");
 
     #ifdef DEBUG
-      printf("\nH5Tuner: Loading parameters file for H5Dcreate2: %s\n", file_path);
+      //printf("\nH5Tuner: Loading parameters file for H5Dcreate2: %s\n", file_path);
     #endif
 
     fp = fopen(file_path, "r");
@@ -373,7 +373,7 @@ hid_t DECL(H5Dcreate2)(hid_t loc_id, const char *name, hid_t dtype_id, hid_t spa
     hid_t chunked_pid = set_hdf5_parameter(tree, "chunk", name, space_id);
 
     #ifdef DEBUG
-  	  printf("\nH5Tuner: calling H5Dcreate2.\n");
+  	  //printf("\nH5Tuner: calling H5Dcreate2.\n");
   	#endif
 
     if (chunked_pid == -1) {
