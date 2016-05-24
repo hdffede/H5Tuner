@@ -21,11 +21,6 @@
 #include "autotuner.h"
 #include "mxml.h"
 
-/*
-typedef int hid_t;
-typedef int herr_t;
-*/
-
 #define __USE_GNU
 #include <dlfcn.h>
 #include <stdlib.h>
@@ -87,6 +82,8 @@ void set_mpi_parameter(mxml_node_t *tree, char *parameter_name, const char *file
     const char *node_file_name;
     mxml_node_t *node;
     int mpi_code;
+    int error = 0;
+
 
     for(node = mxmlFindElement(tree, tree, parameter_name, NULL, NULL,MXML_DESCEND);
             node != NULL; node = mxmlFindElement(node, tree, parameter_name, NULL, NULL,MXML_DESCEND)) {
@@ -101,7 +98,7 @@ void set_mpi_parameter(mxml_node_t *tree, char *parameter_name, const char *file
 #endif
             mpi_code = MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
             if(mpi_code != MPI_SUCCESS)
-                return error;
+                return ++error;
         }
         /* MSC - CHECK usage of strstr().. need to switch to strcmp() probably */
         else {
@@ -109,7 +106,9 @@ void set_mpi_parameter(mxml_node_t *tree, char *parameter_name, const char *file
 #ifdef DEBUG
                 /* printf("H5Tuner: %s setting %s: %s\n\n\n",node_file_name, parameter_name, node->child->value.text.string); */
 #endif
-                MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
+                mpi_code = MPI_Info_set(*orig_info, parameter_name, node->child->value.text.string);
+                if(mpi_code != MPI_SUCCESS)
+                    return ++error;
             }
              /* continue; */
         }
@@ -263,7 +262,9 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 #ifdef DEBUG
 		  /* printf("H5Tuner: found no MPI_Info object and is creating a new one.\n"); */
 #endif
-		MPI_Info_create(&orig_info);
+		mpi_code = MPI_Info_create(&orig_info);
+        if(mpi_code != MPI_SUCCESS)
+            return ++error;
 	}
 	else {
 
@@ -274,7 +275,9 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 
 #ifdef DEBUG
 	  int nkeys = -1;
-	  MPI_Info_get_nkeys(orig_info, &nkeys);
+	  mpi_code = MPI_Info_get_nkeys(orig_info, &nkeys);
+      if(mpi_code != MPI_SUCCESS)
+          return ++error;
 	  /* printf("H5Tuner: MPI_Info object has %d keys\n", nkeys); */
 #endif
 
@@ -292,7 +295,9 @@ hid_t DECL(H5Fcreate)(const char *filename, unsigned flags, hid_t fcpl_id, hid_t
 	set_hdf5_parameter(tree, "alignment", filename, fapl_id);
 
 #ifdef DEBUG
-	  MPI_Info_get_nkeys(orig_info, &nkeys);
+	  mpi_code = MPI_Info_get_nkeys(orig_info, &nkeys);
+      if(mpi_code != MPI_SUCCESS)
+          return ++error;
 	/* printf("H5Tuner: completed parameters setting \n");
     printf("H5Tuner created MPI_Info object has %d keys!\n", nkeys); */
 #endif
